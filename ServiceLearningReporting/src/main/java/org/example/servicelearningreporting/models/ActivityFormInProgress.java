@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "activityForms")
+@Table(name = "activity_form_inProgress")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActivityForm {
+public class ActivityFormInProgress {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private LocalDateTime timestamp;
     private LocalDate date;
     private LocalTime startTime;

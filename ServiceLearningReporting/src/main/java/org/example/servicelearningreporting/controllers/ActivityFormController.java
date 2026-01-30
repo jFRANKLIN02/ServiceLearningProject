@@ -1,20 +1,24 @@
 package org.example.servicelearningreporting.controllers;
 
-import org.example.servicelearningreporting.models.ActivityForm;
+import org.example.servicelearningreporting.models.ActivityFormInProgress;
 import org.springframework.ui.Model;
-import org.example.servicelearningreporting.repos.ActivityFormRepo;
+import org.example.servicelearningreporting.repos.ActivityFormInProgressRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/activityform")
+@RequestMapping("/activityForm")
 public class ActivityFormController {
     @Autowired
-    private ActivityFormRepo activityFormRepo;
-    @GetMapping("/list")
-    public List<ActivityForm> findAll() { return activityFormRepo.findAll(); }
+    private ActivityFormInProgressRepo activityFormRepo;
+    //get in progress forms
+    @GetMapping("/inProgress")
+    public String inProgressForms(Model model) {
+        model.addAttribute("activityForm", new ActivityFormInProgress());
+        model.addAttribute("activityForms", activityFormRepo.findAll());
+        model.addAttribute("content", "pages/inProgressForms");
+        return "layout";
+    }
 }

@@ -16,4 +16,14 @@ public class PageController {
         model.addAttribute("content", "pages/activityForm");
         return "layout";
     }
+//    @GetMapping("/inProgressForms")
+//    public String inProgressForms(Model model) {
+//        model.addAttribute("content", "pages/inProgressForms");
+//        return "layout";
+//    }
+//    @GetMapping("/submittedForms")
+//    public String submittedForms(Model model) {
+//        model.addAttribute("content", "pages/submittedForms");
+//        return "layout";
+//    }
 }
