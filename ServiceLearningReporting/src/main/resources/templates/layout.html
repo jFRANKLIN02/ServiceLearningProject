@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Activity Form App</title>
+</head>
+<body>
+    <!-- Static content -->
+    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <hr/>
+
+    <!-- Dynamic body -->
+    <div th:replace="${content}"></div>
+</body>
+</html>
