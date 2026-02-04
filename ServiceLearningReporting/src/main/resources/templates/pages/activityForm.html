@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Learning Activity Log</title>
+</head>
+<body>
+<!-- Static content -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<hr/>
+
+<!-- Dynamic body -->
+<form th:action="@{/activityForm/save}" th:object="${activityForm}" method="post">
+    <div>
+        <label>Date (Activity Logged): </label>
+        <input type="date" th:field="*{timestamp}"/>
+    </div><br>
+    <div>
+        <label>Date of Project: </label>
+        <input type="date" th:field="*{date}"/>
+    </div><br>
+    <!--Times-->
+    <div>
+        <label>Start Time: </label>
+        <input type="time" th:field="*{startTime}"/>
+
+        <label>End Time: </label>
+        <input type="time" th:field="*{endTime}"/>
+
+        <label>Total Hours: </label>
+        <input type="text" th:field="*{totalHours}"/>
+    </div><br>
+    <!--Org Name-->
+    <div>
+        <label>Name of Organization: </label><br>
+        <input type="text" th:field="*{organizationname}"/>
+    </div><br>
+    <!--Contact Info-->
+    <div>
+        <label>Contact Name</label>
+        <input type="text" th:field="*{contactname}"/>
+
+        <label>City</label>
+        <input type="text" th:field="*{city}"/>
+
+        <label>Email Address</label>
+        <input type="email" th:field="*{email}"/>
+
+        <label>Phone No.</label>
+        <input type="tel" th:field="*{phone}"/>
+    </div><br>
+    <!--Picture-->
+    <div>
+        <label>Upload Picture </label>
+        <button>+</button>
+    </div><br>
+    <!--Description-->
+    <div>
+        <label>Activity Description</label><br>
+        <textarea th:field="*{activityDescription}"></textarea>
+    </div><br>
+    <!--Donations/Submit-->
+    <div>
+        <label>Donations (Cash): </label>
+        <input type="text" step="0.01" th:field="*{donations}"/>
+
+        <button type="submit">SUBMIT</button>
+    </div><br>
+</form>
+</body>
+</html>
