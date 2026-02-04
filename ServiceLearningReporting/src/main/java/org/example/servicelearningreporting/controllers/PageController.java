@@ -16,6 +16,16 @@ public class PageController {
         model.addAttribute("content", "pages/activityForm");
         return "layout";
     }
+    @GetMapping("/userForm")
+    public String userForm(Model model) {
+        model.addAttribute("content", "pages/student-staff-form");
+        return "layout";
+    }
+    @GetMapping("/instructorForm")
+    public String instructorForm(Model model) {
+        model.addAttribute("content", "pages/instructor-form");
+        return "layout";
+    }
 //    @GetMapping("/inProgressForms")
 //    public String inProgressForms(Model model) {
 //        model.addAttribute("content", "pages/inProgressForms");
