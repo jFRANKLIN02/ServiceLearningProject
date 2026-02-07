@@ -5,61 +5,66 @@
     <title>Service Learning Activity Log</title>
 </head>
 <body>
-<!--Dates-->
-<div>
-    <label>Date (Activity Logged): </label>
-    <input type="date">
-</div><br>
-<div>
-    <label>Date of Project: </label>
-    <input type="date">
-</div><br>
-<!--Times-->
-<div>
-    <label>Start Time: </label>
-    <input type="time">
+    <form th:action="@{/activityForm}"  method="post">
+        <!--Dates-->
+        <div>
+            <label>Date (Activity Logged): </label>
+            <input type="date">
+        </div><br>
+        <div>
+            <label>Date of Project: </label>
+            <input type="date">
+        </div><br>
+        <!--Times-->
+        <div>
+            <label>Start Time: </label>
+            <input type="time">
 
-    <label>End Time: </label>
-    <input type="time">
+            <label>End Time: </label>
+            <input type="time">
 
-    <label>Total Hours: </label>
-    <input type="text">
-</div><br>
-<!--Org Name-->
-<div>
-    <label>Name of Organization: </label><br>
-    <input type="text">
-</div><br>
-<!--Contact Info-->
-<div>
-    <label>Contact Name</label>
-    <input type="text">
+            <label>Total Hours: </label>
+            <input type="text">
+        </div><br>
+        <!--Org Name-->
+        <div>
+            <label>Name of Organization: </label><br>
+            <input type="text">
+        </div><br>
+        <!--Contact Info-->
+        <div>
+            <label>Contact Name</label>
+            <input type="text">
 
-    <label>City</label>
-    <input type="text">
+            <label>City</label>
+            <input type="text">
 
-    <label>Email Address</label>
-    <input type="email">
+            <label>Email Address</label>
+            <input type="email">
 
-    <label>Phone No.</label>
-    <input type="tel">
-</div><br>
-<!--Picture-->
-<div>
-    <label>Upload Picture </label>
-    <button>+</button>
-</div><br>
-<!--Description-->
-<div>
-    <label>Activity Description</label><br>
-    <textarea></textarea>
-</div><br>
-<!--Dpnations/Submit-->
-<div>
-    <label>Donations (Cash): </label>
-    <input type="text">
+            <label>Phone No.</label>
+            <input type="tel">
+        </div><br>
+        <!--Picture-->
+        <div>
+            <label>Upload Picture </label>
+            <button>+</button>
+        </div><br>
+        <!--Description-->
+        <div>
+            <label>Activity Description</label><br>
+            <textarea></textarea>
+        </div><br>
+        <!--Dpnations/Submit-->
+        <div>
+            <label>Donations (Cash): </label>
+            <input type="text">
 
-    <button>SUBMIT</button>
-</div><br>
+            <!-- Submit Button -->
+            <button type="submit" formaction="/activityForm/form-save">Save For Later</button>
+            <!-- Save for later Button -->
+            <button type="submit" formaction="/activityForm/form-submit">Submit</button>
+        </div><br>
+    </form>
 </body>
 </html>
