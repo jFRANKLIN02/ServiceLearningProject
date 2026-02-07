@@ -5,7 +5,8 @@
     <title>Service Learning Activity Log</title>
 </head>
 <body>
-    <form th:action="@{/activityForm}"  method="post">
+    <!--/*@thymesVar id="activityForm" type="org"*/-->
+    <form th:action="@{/activityForm}" th:object="${activityForm}" method="post">
         <!--Dates-->
         <div>
             <label>Date (Activity Logged): </label>
