@@ -21,5 +21,8 @@ public class ActivityFormController {
         model.addAttribute("content", "pages/inProgressForms");
         return "layout";
     }
-    //Post
+    //In progress Post
+
+    //Completed Post
+    
 }
