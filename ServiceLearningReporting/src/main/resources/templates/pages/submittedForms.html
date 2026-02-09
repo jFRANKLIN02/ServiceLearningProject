@@ -7,6 +7,7 @@
         <thead>
         <tr>
             <th>ID</th>
+            <th>Contact Name</th>
             <th>Org Name</th>
             <th>Activity Date</th>
             <th>Creation Date</th> <!-- auto generated local time field-->
@@ -16,6 +17,7 @@
         <!--/*@thymesVar id="activityForms" type="org"*/-->
         <tr th:each="activityForm : ${activityForms}">
             <td th:text="${activityForm.id}"></td>
+            <td th:text="${activityForm.contactName}"></td>
             <td th:text="${activityForm.organizationName}"></td>
             <td th:text="${activityForm.date}"></td>
             <td th:text="${activityForm.timestamp}"></td>
