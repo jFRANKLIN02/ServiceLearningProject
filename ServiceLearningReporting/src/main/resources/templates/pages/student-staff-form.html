@@ -5,61 +5,124 @@
     <title>Service Learning Activity Log</title>
 </head>
 <body>
-<!--Dates-->
-<div>
-    <label>Date (Activity Logged): </label>
-    <input type="date">
-</div><br>
-<div>
-    <label>Date of Project: </label>
-    <input type="date">
-</div><br>
-<!--Times-->
-<div>
-    <label>Start Time: </label>
-    <input type="time">
+    <form th:object="${activityForm}" th:action="@{/activityForm}" method="post">
+        <label>Created On:</label>
+        <input type="text"
+               th:value="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd HH:mm')}"
+               readonly
+                th:field="*{timestamp}"><br>
+        <!-- Date -->
+        <div>
+            <label>Date of Activity:</label>
+            <input type="date" th:field="*{date}" required>
+            <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+        </div><br>
 
-    <label>End Time: </label>
-    <input type="time">
+        <!-- Times -->
+        <div>
+            <label>Start Time:</label>
+            <input type="time" th:field="*{startTime}" required>
 
-    <label>Total Hours: </label>
-    <input type="text">
-</div><br>
-<!--Org Name-->
-<div>
-    <label>Name of Organization: </label><br>
-    <input type="text">
-</div><br>
-<!--Contact Info-->
-<div>
-    <label>Contact Name</label>
-    <input type="text">
+            <label>End Time:</label>
+            <input type="time" th:field="*{endTime}" required>
 
-    <label>City</label>
-    <input type="text">
+            <label>Total Hours:</label>
+            <input type="number" th:field="*{totalHours}" min="1" readonly>
+        </div><br>
 
-    <label>Email Address</label>
-    <input type="email">
+        <!-- Organization -->
+        <div>
+            <label>Name of Organization:</label><br>
+            <input type="text" th:field="*{organizationName}" required>
+        </div><br>
 
-    <label>Phone No.</label>
-    <input type="tel">
-</div><br>
-<!--Picture-->
-<div>
-    <label>Upload Picture </label>
-    <button>+</button>
-</div><br>
-<!--Description-->
-<div>
-    <label>Activity Description</label><br>
-    <textarea></textarea>
-</div><br>
-<!--Dpnations/Submit-->
-<div>
-    <label>Donations (Cash): </label>
-    <input type="text">
+        <!-- Contact Info -->
+        <div>
+            <label>Contact Name:</label>
+            <input type="text" th:field="*{contactName}" required>
 
-    <button>SUBMIT</button>
-</div><br>
+            <label>City:</label>
+            <input type="text" th:field="*{city}" required>
+
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" required>
+
+            <label>Phone:</label>
+            <input type="tel" th:field="*{phone}" required>
+        </div><br>
+
+        <!-- Description -->
+        <div>
+            <label>Activity Description:</label><br>
+            <textarea th:field="*{activityDescription}" required></textarea>
+        </div><br>
+
+        <!-- Donations -->
+        <div>
+            <label>Donations (Cash):</label>
+            <input type="number" step="0.01" th:field="*{donations}" min="0">
+        </div><br>
+
+        <!--        &lt;!&ndash;Dates&ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <label>Date (Activity Logged): </label>-->
+        <!--            <input type="date">-->
+        <!--        </div><br>-->
+        <!--        <div>-->
+        <!--            <label>Date of Project: </label>-->
+        <!--            <input type="date">-->
+        <!--        </div><br>-->
+        <!--        &lt;!&ndash;Times&ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <label>Start Time: </label>-->
+        <!--            <input type="time">-->
+
+        <!--            <label>End Time: </label>-->
+        <!--            <input type="time">-->
+
+        <!--            <label>Total Hours: </label>-->
+        <!--            <input type="text">-->
+        <!--        </div><br>-->
+        <!--        &lt;!&ndash;Org Name&ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <label>Name of Organization: </label><br>-->
+        <!--            <input type="text">-->
+        <!--        </div><br>-->
+        <!--        &lt;!&ndash;Contact Info&ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <label>Contact Name</label>-->
+        <!--            <input type="text">-->
+
+        <!--            <label>City</label>-->
+        <!--            <input type="text">-->
+
+        <!--            <label>Email Address</label>-->
+        <!--            <input type="email">-->
+
+        <!--            <label>Phone No.</label>-->
+        <!--            <input type="tel">-->
+        <!--        </div><br>-->
+        <!--        &lt;!&ndash;Picture&ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <label>Upload Picture </label>-->
+        <!--            <button>+</button>-->
+        <!--        </div><br>-->
+        <!--        &lt;!&ndash;Description&ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <label>Activity Description</label><br>-->
+        <!--            <textarea></textarea>-->
+        <!--        </div><br>-->
+        <!--        &lt;!&ndash;Dpnations/Submit&ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <label>Donations (Cash): </label>-->
+        <!--            <input type="text">-->
+
+
+        <!-- Submit Button -->
+            <button type="submit" formaction="/activityForm/form-save">Save For Later</button>
+            <!-- Save for later Button -->
+            <button type="submit" formaction="/activityForm/form-submit">Submit</button>
+        </div><br>
+    </form>
 </body>
 </html>
