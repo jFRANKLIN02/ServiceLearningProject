@@ -44,5 +44,32 @@ public class ActivityFormController {
         activityFormSubmittedRepo.save(activityFormSubmitted);
         return "redirect:/activityForm/submitted";
     }
-
+    //Edit submitted form
+    @GetMapping("/edit/{id}")
+    public String editSubmittedForm(@PathVariable Long id, Model model) {
+        ActivityFormSubmitted form = activityFormSubmittedRepo
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
+        model.addAttribute("activityForm", form);
+        model.addAttribute("readOnly", false);
+        model.addAttribute("isEdit", true);
+        model.addAttribute("content", "pages/student-staff-form");
+        return "layout";
+    }
+    @PostMapping("/update")
+    public String updateSubmittedForm(@ModelAttribute ActivityFormSubmitted activityFormSubmitted) {
+        activityFormSubmittedRepo.save(activityFormSubmitted);
+        return "redirect:/activityForm/submitted";
+    }
+    //View details from submitted form
+    @GetMapping("/view/{id}")
+    public String viewSubmittedForm(@PathVariable Long id, Model model) {
+        ActivityFormSubmitted form = activityFormSubmittedRepo
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
+        model.addAttribute("activityForm", form);
+        model.addAttribute("readOnly", true);
+        model.addAttribute("content", "pages/student-staff-form");
+        return "layout";
+    }
 }

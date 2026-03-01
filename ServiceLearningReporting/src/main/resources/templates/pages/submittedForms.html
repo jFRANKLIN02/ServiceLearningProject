@@ -11,6 +11,7 @@
             <th>Org Name</th>
             <th>Activity Date</th>
             <th>Creation Date</th> <!-- auto generated local time field-->
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -21,6 +22,15 @@
             <td th:text="${activityForm.organizationName}"></td>
             <td th:text="${activityForm.date}"></td>
             <td th:text="${activityForm.timestamp}"></td>
+            <!--edit/details-->
+            <td>
+                <a th:href="@{/activityForm/edit/{id}(id=${activityForm.id})}">
+                    <button>Edit</button>
+                </a>
+                <a th:href="@{/activityForm/view/{id}(id=${activityForm.id})}">
+                    <button>Details</button>
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>
