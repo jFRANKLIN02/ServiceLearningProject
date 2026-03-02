@@ -1,6 +1,6 @@
 package org.example.servicelearningreporting.controllers;
 
-import org.example.servicelearningreporting.models.ActivityFormInProgress;
+import org.example.servicelearningreporting.models.ActivityForm;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class PageController {
     @GetMapping("/userForm")
     public String userForm(Model model) {
         //create new object to auto fill certain fields and mark as read only?
-        ActivityFormInProgress form = new ActivityFormInProgress();
+        ActivityForm form = new ActivityForm();
         form.setTimestamp(LocalDateTime.now());
         model.addAttribute("activityForm", form);
         model.addAttribute("content", "pages/student-staff-form");
@@ -33,14 +33,4 @@ public class PageController {
         model.addAttribute("content", "pages/instructor-form");
         return "layout";
     }
-//    @GetMapping("/inProgressForms")
-//    public String inProgressForms(Model model) {
-//        model.addAttribute("content", "pages/inProgressForms");
-//        return "layout";
-//    }
-//    @GetMapping("/submittedForms")
-//    public String submittedForms(Model model) {
-//        model.addAttribute("content", "pages/submittedForms");
-//        return "layout";
-//    }
 }

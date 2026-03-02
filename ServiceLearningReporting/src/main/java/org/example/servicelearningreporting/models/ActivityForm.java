@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "activity_form_submitted")
+@Table(name = "activity_form")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActivityFormSubmitted {
+public class ActivityForm {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
@@ -33,6 +33,6 @@ public class ActivityFormSubmitted {
     private String activityDescription;
     private double donations;
     private String imagePath;
-    //Connected to a base user id
-
+    //new field
+    private boolean submitted;
 }
