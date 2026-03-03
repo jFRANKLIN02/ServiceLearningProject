@@ -25,6 +25,8 @@ public class PageController {
         ActivityForm form = new ActivityForm();
         form.setTimestamp(LocalDateTime.now());
         model.addAttribute("activityForm", form);
+        model.addAttribute("readOnly", false);
+        model.addAttribute("isEdit", false);
         model.addAttribute("content", "pages/student-staff-form");
         return "layout";
     }
