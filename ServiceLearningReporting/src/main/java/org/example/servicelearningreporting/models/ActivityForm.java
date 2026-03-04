@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class ActivityForm {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
     private LocalDateTime timestamp;
+    @DateTimeFormat(pattern="yyy-MM-dd")
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;

@@ -5,14 +5,13 @@
     <title>Service Learning Activity Log</title>
 </head>
 <body>
-<!--/*@thymesVar id="activityForm" type="com.org.example.servicelearningreporting.models.ActivityForm"*/-->
+<!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
     <form th:object="${activityForm}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <label>Created On:</label>
         <input type="text"
                th:value="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd HH:mm')}"
-               readonly
-                th:field="*{timestamp}" th:readonly="${readOnly}"><br>
+               readonly><br>
         <!-- Date -->
         <div>
             <label>Date of Activity:</label>
