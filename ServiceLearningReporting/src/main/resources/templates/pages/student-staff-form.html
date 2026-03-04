@@ -22,13 +22,14 @@
         <!-- Times -->
         <div>
             <label>Start Time:</label>
-            <input type="time" th:field="*{startTime}" required>
+            <input type="time" id="startTime" th:field="*{startTime}" required>
 
             <label>End Time:</label>
-            <input type="time" th:field="*{endTime}" required>
+            <input type="time" id="endTime" th:field="*{endTime}" required>
 
-            <label>Total Hours:</label>
-            <input type="number" th:field="*{totalHours}" min="1" readonly>
+            <label>Total Time:</label>
+            <input type="text" id="totalDisplay" readonly>
+            <input type="hidden" id="totalHours" th:field="*{totalHours}">
         </div><br>
 
         <!-- Organization -->
@@ -43,7 +44,20 @@
             <input type="text" th:field="*{contactName}" th:readonly="${readOnly}" required>
 
             <label>City:</label>
-            <input type="text" th:field="*{city}" th:readonly="${readOnly}" required>
+            <select th:field="*{city}" th:disabled="${readOnly}" required>
+                <option value="">-- Select a City --</option>
+                <option value="Fredericton">Fredericton</option>
+                <option value="Oromocto">Oromocto</option>
+                <option value="Miramichi">Miramichi</option>
+                <option value="Moncton">Moncton</option>
+                <option value="Dieppe">Dieppe</option>
+                <option value="Riverview">Riverview</option>
+                <option value="Saint John">Saint John</option>
+                <option value="Quispamsis">Quispamsis</option>
+                <option value="Rothesay">Rothesay</option>
+                <option value="St. Andrews">St. Andrews</option>
+                <option value="Woodstock">Woodstock</option>
+            </select>
 
             <label>Email:</label>
             <input type="email" th:field="*{email}" th:readonly="${readOnly}" required>
@@ -64,22 +78,15 @@
             <input type="number" step="0.25" th:field="*{donations}" min="0.00" th:readonly="${readOnly}">
         </div><br>
 
-        <!-- Submit Button -->
+        <!-- Buttons -->
         <div th:if="${!readOnly}">
             <div th:if="${isEdit}">
                 <button type="submit" formaction="/activityForm/update">
                     Update
                 </button>
-<!--                <div th:if="${isSubmitted}">-->
-<!--                    <a th:href="@{/activityForm/submitted}">Cancel</a>-->
-<!--                </div>-->
-<!--                <div th:if="${!isSubmitted}">-->
-<!--                    <button>-->
-<!--                        <a th:href="@{/activityForm/submitted}">Cancel</a>-->
-<!--                    </button>-->
-<!--                </div>-->
-                <button>
-                    <a th:href="@{/activityForm/submitted}">Cancel</a>
+
+                <button type="submit" onclick="window.location.href='/activityForm/submitted'">
+                    Cancel
                 </button>
             </div>
             <div th:if="${!isEdit}">
@@ -91,7 +98,43 @@
                     Submit
                 </button>
             </div>
-        </div><br>
+        </div>
+        <div th:if="${readOnly}">
+            <button type="button" onclick="window.location.href='/activityForm/submitted'">
+                Back
+            </button>
+        </div>
     </form>
+<!--JavaScript for total time calculation-->
+<script>
+    function calculateHours() {
+        const start = document.getElementById("startTime").value;
+        const end = document.getElementById("endTime").value;
+
+        if (start && end) {
+            const [startHour, startMinute] = start.split(":").map(Number);
+            const [endHour, endMinute] = end.split(":").map(Number);
+
+            let startTotal = startHour * 60 + startMinute;
+            let endTotal = endHour * 60 + endMinute;
+
+            if (endTotal < startTotal) {
+                endTotal += 24 * 60;
+            }
+
+            const diffMinutes = endTotal - startTotal;
+
+            const hours = Math.floor(diffMinutes / 60);
+            const minutes = diffMinutes % 60;
+            //Save as decimal
+            document.getElementById("totalHours").value = (diffMinutes / 60).toFixed(1);
+            //More Readable version
+            document.getElementById("totalDisplay").value =
+                `${hours} hrs ${minutes} min`;
+        }
+    }
+    document.getElementById("startTime").addEventListener("change", calculateHours);
+    document.getElementById("endTime").addEventListener("change", calculateHours);
+</script>
 </body>
 </html>
