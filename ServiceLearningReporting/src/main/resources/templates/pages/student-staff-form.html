@@ -5,6 +5,7 @@
     <title>Service Learning Activity Log</title>
 </head>
 <body>
+<!--/*@thymesVar id="activityForm" type="com.org.example.servicelearningreporting.models.ActivityForm"*/-->
     <form th:object="${activityForm}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <label>Created On:</label>
@@ -15,7 +16,7 @@
         <!-- Date -->
         <div>
             <label>Date of Activity:</label>
-            <input type="date" th:field="*{date}" th:readonly="${readOnly}" required>
+            <input type="date" th:field="*{date}" required>
             <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
         </div><br>
 
@@ -64,66 +65,22 @@
             <input type="number" step="0.01" th:field="*{donations}" min="0" th:readonly="${readOnly}">
         </div><br>
 
-        <!--        &lt;!&ndash;Dates&ndash;&gt;-->
-        <!--        <div>-->
-        <!--            <label>Date (Activity Logged): </label>-->
-        <!--            <input type="date">-->
-        <!--        </div><br>-->
-        <!--        <div>-->
-        <!--            <label>Date of Project: </label>-->
-        <!--            <input type="date">-->
-        <!--        </div><br>-->
-        <!--        &lt;!&ndash;Times&ndash;&gt;-->
-        <!--        <div>-->
-        <!--            <label>Start Time: </label>-->
-        <!--            <input type="time">-->
-
-        <!--            <label>End Time: </label>-->
-        <!--            <input type="time">-->
-
-        <!--            <label>Total Hours: </label>-->
-        <!--            <input type="text">-->
-        <!--        </div><br>-->
-        <!--        &lt;!&ndash;Org Name&ndash;&gt;-->
-        <!--        <div>-->
-        <!--            <label>Name of Organization: </label><br>-->
-        <!--            <input type="text">-->
-        <!--        </div><br>-->
-        <!--        &lt;!&ndash;Contact Info&ndash;&gt;-->
-        <!--        <div>-->
-        <!--            <label>Contact Name</label>-->
-        <!--            <input type="text">-->
-
-        <!--            <label>City</label>-->
-        <!--            <input type="text">-->
-
-        <!--            <label>Email Address</label>-->
-        <!--            <input type="email">-->
-
-        <!--            <label>Phone No.</label>-->
-        <!--            <input type="tel">-->
-        <!--        </div><br>-->
-        <!--        &lt;!&ndash;Picture&ndash;&gt;-->
-        <!--        <div>-->
-        <!--            <label>Upload Picture </label>-->
-        <!--            <button>+</button>-->
-        <!--        </div><br>-->
-        <!--        &lt;!&ndash;Description&ndash;&gt;-->
-        <!--        <div>-->
-        <!--            <label>Activity Description</label><br>-->
-        <!--            <textarea></textarea>-->
-        <!--        </div><br>-->
-        <!--        &lt;!&ndash;Dpnations/Submit&ndash;&gt;-->
-        <!--        <div>-->
-        <!--            <label>Donations (Cash): </label>-->
-        <!--            <input type="text">-->
-
-
         <!-- Submit Button -->
         <div th:if="${!readOnly}">
             <div th:if="${isEdit}">
                 <button type="submit" formaction="/activityForm/update">
                     Update
+                </button>
+<!--                <div th:if="${isSubmitted}">-->
+<!--                    <a th:href="@{/activityForm/submitted}">Cancel</a>-->
+<!--                </div>-->
+<!--                <div th:if="${!isSubmitted}">-->
+<!--                    <button>-->
+<!--                        <a th:href="@{/activityForm/submitted}">Cancel</a>-->
+<!--                    </button>-->
+<!--                </div>-->
+                <button>
+                    <a th:href="@{/activityForm/submitted}">Cancel</a>
                 </button>
             </div>
             <div th:if="${!isEdit}">

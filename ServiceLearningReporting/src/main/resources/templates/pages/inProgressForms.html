@@ -21,6 +21,15 @@
                 <td th:text="${activityForm.organizationName}"></td>
                 <td th:text="${activityForm.date}"></td>
                 <td th:text="${activityForm.timestamp}"></td>
+                <!--edit/details-->
+                <td>
+                    <a th:href="@{/activityForm/edit/{id}(id=${activityForm.id})}">
+                        Edit
+                    </a>
+                    <a th:href="@{/activityForm/view/{id}(id=${activityForm.id})}">
+                        Details
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
