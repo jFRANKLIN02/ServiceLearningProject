@@ -26,7 +26,7 @@ public class ActivityForm {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private int totalHours;
+    private String totalHours;
     private String organizationName;
     private String contactName;
     private String city;
@@ -37,4 +37,13 @@ public class ActivityForm {
     private String imagePath;
     //new field
     private boolean submitted;
+
+    //Instructor form specific fields
+    private String program;
+    private String participant;
+    private String campus;
+    private int quantity;
+
+    //Student or Instructor indicator
+    private String formType;
 }

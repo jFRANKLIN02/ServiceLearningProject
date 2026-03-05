@@ -12,7 +12,9 @@
                     <h1>LOG SERVICE LEARNING ACTIVITY</h1>
                     <button>FR</button>
                 </div>
+                <!--Hidden-->
                 <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{formType}"/>
                 <div>
                     <label>Log Date:</label>
                     <input type="text"
@@ -31,8 +33,8 @@
                     <input type="time" th:field="*{startTime}" required>
                     <label>End Time:</label>
                     <input type="time" th:field="*{endTime}" required>
-                    <label>Total Hours:</label>
-                    <input type="number" th:field="*{totalHours}" min="1" readonly>
+                    <label>Total Time:</label>
+                    <input type="text" id="totalHours" th:field="*{totalHours}">
                 </div>
                     <!-- Organization -->
                 <div>
@@ -45,7 +47,20 @@
                     <input type="text" th:field="*{contactName}" th:readonly="${readOnly}" required>
 
                     <label>City:</label>
-                    <input type="text" th:field="*{city}" th:readonly="${readOnly}" required>
+                    <select th:field="*{city}" th:disabled="${readOnly}" required>
+                        <option value="">-- Select a City --</option>
+                        <option value="Fredericton">Fredericton</option>
+                        <option value="Oromocto">Oromocto</option>
+                        <option value="Miramichi">Miramichi</option>
+                        <option value="Moncton">Moncton</option>
+                        <option value="Dieppe">Dieppe</option>
+                        <option value="Riverview">Riverview</option>
+                        <option value="Saint John">Saint John</option>
+                        <option value="Quispamsis">Quispamsis</option>
+                        <option value="Rothesay">Rothesay</option>
+                        <option value="St. Andrews">St. Andrews</option>
+                        <option value="Woodstock">Woodstock</option>
+                    </select>
 
                     <label>Email:</label>
                     <input type="email" th:field="*{email}" th:readonly="${readOnly}" required>
@@ -90,5 +105,34 @@
                 </div>
             </form>
         </div>
+        <!--JavaScript for total time calculation-->
+        <script>
+            function calculateHours() {
+                const start = document.getElementById("startTime").value;
+                const end = document.getElementById("endTime").value;
+
+                if (start && end) {
+                    const [startHour, startMinute] = start.split(":").map(Number);
+                    const [endHour, endMinute] = end.split(":").map(Number);
+
+                    let startTotal = startHour * 60 + startMinute;
+                    let endTotal = endHour * 60 + endMinute;
+
+                    if (endTotal < startTotal) {
+                        endTotal += 24 * 60;
+                    }
+
+                    const diffMinutes = endTotal - startTotal;
+
+                    const hours = Math.floor(diffMinutes / 60);
+                    const minutes = diffMinutes % 60;
+                    //Readable version
+                    document.getElementById("totalHours").value =
+                        `${hours} hrs ${minutes} min`;
+                }
+            }
+            document.getElementById("startTime").addEventListener("change", calculateHours);
+            document.getElementById("endTime").addEventListener("change", calculateHours);
+        </script>
     </body>
 </html>
