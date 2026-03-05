@@ -26,7 +26,7 @@ public class ActivityForm {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private double totalHours;
+    private String totalHours;
     private String organizationName;
     private String contactName;
     private String city;

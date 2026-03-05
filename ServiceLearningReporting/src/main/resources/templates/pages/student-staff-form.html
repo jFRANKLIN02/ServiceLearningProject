@@ -28,8 +28,7 @@
             <input type="time" id="endTime" th:field="*{endTime}" required>
 
             <label>Total Time:</label>
-            <input type="text" id="totalDisplay" readonly>
-            <input type="hidden" id="totalHours" th:field="*{totalHours}">
+            <input type="text" id="totalHours" th:field="*{totalHours}">
         </div><br>
 
         <!-- Organization -->
@@ -75,7 +74,7 @@
         <!-- Donations -->
         <div>
             <label>Donations (Cash):</label>
-            <input type="number" step="0.25" th:field="*{donations}" min="0.00" th:readonly="${readOnly}">
+            <input type="number" step="0.25" th:field="*{donations}" min="'$' + 0.00" th:readonly="${readOnly}">
         </div><br>
 
         <!-- Buttons -->
@@ -126,10 +125,8 @@
 
             const hours = Math.floor(diffMinutes / 60);
             const minutes = diffMinutes % 60;
-            //Save as decimal
-            document.getElementById("totalHours").value = (diffMinutes / 60).toFixed(1);
-            //More Readable version
-            document.getElementById("totalDisplay").value =
+            //Readable version
+            document.getElementById("totalHours").value =
                 `${hours} hrs ${minutes} min`;
         }
     }
