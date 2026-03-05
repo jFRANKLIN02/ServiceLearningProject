@@ -18,13 +18,13 @@
                 </tr>
             </thead>
             <tbody>
-                <!--/*@thymesVar id="activityForms" type="org"*/-->
+            <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
                 <tr th:each="activityForm : ${activityForms}">
                     <td th:text="${activityForm.id}"></td>
                     <td th:text="${activityForm.contactName}"></td>
                     <td th:text="${activityForm.organizationName}"></td>
                     <td th:text="${activityForm.date}"></td>
-                    <td th:text="${activityForm.timestamp}"></td>
+                    <td th:text="${{activityForm.timestamp}}"></td>
                     <!--edit/details-->
                     <td>
                         <a th:href="@{/activityForm/edit/{id}(id=${activityForm.id})}">

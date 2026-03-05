@@ -4,6 +4,11 @@
         <meta charset="UTF-8">
         <title>Service Learning - Activity Log Form</title>
     </head>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
     <body>
         <div class="container">
         <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
@@ -65,19 +70,11 @@
                <!-- Submit Button -->
                 <div th:if="${!readOnly}">
                     <div th:if="${isEdit}">
-                       <button type="submit" formaction="/activityForm/update">
-                           Update
-                       </button>
-            <!--                <div th:if="${isSubmitted}">-->
-            <!--                    <a th:href="@{/activityForm/submitted}">Cancel</a>-->
-            <!--                </div>-->
-            <!--                <div th:if="${!isSubmitted}">-->
-            <!--                    <button>-->
-            <!--                        <a th:href="@{/activityForm/submitted}">Cancel</a>-->
-            <!--                    </button>-->
-            <!--                </div>-->
-                        <a class="btn" th:href="@{/activityForm/submitted}">Cancel</a>
-
+                        <button type="submit" formaction="/activityForm/update">
+                            Update
+                        </button>
+<!--                        <a class="btn" th:href="@{/activityForm/${returnUrl}}">Cancel</a>-->
+                        <button type="button" class="btn" onclick="goBack()">Go Back</button>
                     </div>
                     <div th:if="${!isEdit}">
                         <button type="submit" formaction="/activityForm/form-save">

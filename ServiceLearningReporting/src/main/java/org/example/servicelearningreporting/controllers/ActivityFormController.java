@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -53,6 +54,7 @@ public class ActivityFormController {
         ActivityForm form = activityFormRepo
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
+        form.setTimestamp(LocalDateTime.now());
         model.addAttribute("activityForm", form);
         model.addAttribute("readOnly", false);
         model.addAttribute("isEdit", true);
