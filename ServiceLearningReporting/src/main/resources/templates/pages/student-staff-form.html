@@ -5,38 +5,40 @@
         <title>Service Learning - Activity Log Form</title>
     </head>
     <body>
-    <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
-        <form th:object="${activityForm}" method="post">
+        <div class="container">
+        <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
+            <form th:object="${activityForm}" method="post">
+                <div>
+                    <h1>LOG SERVICE LEARNING ACTIVITY</h1>
+                    <button>FR</button>
+                </div>
                 <input type="hidden" th:field="*{id}"/>
-                <label>Created On:</label>
-                <input type="text"
-                       th:value="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd HH:mm')}"
-                       readonly><br>
+                <div>
+                    <label>Log Date:</label>
+                    <input type="text"
+                           th:value="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd HH:mm')}"
+                           readonly>
+                </div>
                 <!-- Date -->
                 <div>
                     <label>Date of Activity:</label>
                     <input type="date" th:field="*{date}" required>
                     <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-                </div><br>
-
+                </div>
                 <!-- Times -->
                 <div>
                     <label>Start Time:</label>
                     <input type="time" th:field="*{startTime}" required>
-
                     <label>End Time:</label>
                     <input type="time" th:field="*{endTime}" required>
-
                     <label>Total Hours:</label>
                     <input type="number" th:field="*{totalHours}" min="1" readonly>
-                </div><br>
-
-                <!-- Organization -->
+                </div>
+                    <!-- Organization -->
                 <div>
                     <label>Name of Organization:</label><br>
                     <input type="text" th:field="*{organizationName}" th:readonly="${readOnly}" required>
-                </div><br>
-
+                </div>
                 <!-- Contact Info -->
                 <div>
                     <label>Contact Name:</label>
@@ -47,51 +49,46 @@
 
                     <label>Email:</label>
                     <input type="email" th:field="*{email}" th:readonly="${readOnly}" required>
-
                     <label>Phone:</label>
                     <input type="tel" th:field="*{phone}" th:readonly="${readOnly}" required>
-                </div><br>
-
+                </div>
                 <!-- Description -->
                 <div>
                     <label>Activity Description:</label><br>
                     <textarea th:field="*{activityDescription}" th:readonly="${readOnly}" required></textarea>
-                </div><br>
-
+                </div>
                 <!-- Donations -->
                 <div>
                     <label>Donations (Cash):</label>
                     <input type="number" step="0.01" th:field="*{donations}" min="0" th:readonly="${readOnly}">
-                </div><br>
-
-                <!-- Submit Button -->
+               </div>
+               <!-- Submit Button -->
                 <div th:if="${!readOnly}">
                     <div th:if="${isEdit}">
-                        <button type="submit" formaction="/activityForm/update">
-                            Update
-                        </button>
-        <!--                <div th:if="${isSubmitted}">-->
-        <!--                    <a th:href="@{/activityForm/submitted}">Cancel</a>-->
-        <!--                </div>-->
-        <!--                <div th:if="${!isSubmitted}">-->
-        <!--                    <button>-->
-        <!--                        <a th:href="@{/activityForm/submitted}">Cancel</a>-->
-        <!--                    </button>-->
-        <!--                </div>-->
-                        <button>
-                            <a th:href="@{/activityForm/submitted}">Cancel</a>
-                        </button>
+                       <button type="submit" formaction="/activityForm/update">
+                           Update
+                       </button>
+            <!--                <div th:if="${isSubmitted}">-->
+            <!--                    <a th:href="@{/activityForm/submitted}">Cancel</a>-->
+            <!--                </div>-->
+            <!--                <div th:if="${!isSubmitted}">-->
+            <!--                    <button>-->
+            <!--                        <a th:href="@{/activityForm/submitted}">Cancel</a>-->
+            <!--                    </button>-->
+            <!--                </div>-->
+                        <a class="btn" th:href="@{/activityForm/submitted}">Cancel</a>
+
                     </div>
                     <div th:if="${!isEdit}">
                         <button type="submit" formaction="/activityForm/form-save">
                             Save For Later
                         </button>
-
                         <button type="submit" formaction="/activityForm/form-submit">
                             Submit
                         </button>
                     </div>
-                </div><br>
+                </div>
             </form>
+        </div>
     </body>
 </html>
