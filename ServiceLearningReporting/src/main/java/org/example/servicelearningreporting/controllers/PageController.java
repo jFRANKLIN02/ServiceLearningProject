@@ -24,6 +24,7 @@ public class PageController {
         //create new object to auto fill certain fields and mark as read only?
         ActivityForm form = new ActivityForm();
         form.setTimestamp(LocalDateTime.now());
+        form.setFormType("Student");
         model.addAttribute("activityForm", form);
         model.addAttribute("readOnly", false);
         model.addAttribute("isEdit", false);
@@ -32,6 +33,12 @@ public class PageController {
     }
     @GetMapping("/instructorForm")
     public String instructorForm(Model model) {
+        ActivityForm form = new ActivityForm();
+        form.setTimestamp(LocalDateTime.now());
+        form.setFormType("Instructor");
+        model.addAttribute("activityForm", form);
+        model.addAttribute("readOnly", false);
+        model.addAttribute("isEdit", false);
         model.addAttribute("content", "pages/instructor-form");
         return "layout";
     }
