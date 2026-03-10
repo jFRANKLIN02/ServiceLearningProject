@@ -135,12 +135,26 @@ public class ActivityFormController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("filename", "activity.pdf");
+        headers.setContentDispositionFormData("filename", "activity-report.pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(pdf);
     }
     //PDF Controller
+    @PostMapping("/preview/{id}")
+    public String previewPdf(
+            @PathVariable long id,
+            @RequestParam(required = false) List<String> fields,
+            Model model) {
 
+        ActivityForm activity = activityFormRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
+
+        model.addAttribute("activityForm", activity);
+        model.addAttribute("fields", fields);
+
+        return "pdf/activity-preview";
+        //return "pdf/activity-pdf";
+    }
 }
