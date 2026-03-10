@@ -2,6 +2,10 @@ package org.example.servicelearningreporting.controllers;
 
 import org.example.servicelearningreporting.models.ActivityForm;
 import org.example.servicelearningreporting.repos.ActivityFormRepo;
+import org.example.servicelearningreporting.services.PdfService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +18,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/activityForm")
 public class ActivityFormController {
+    private final PdfService pdfService;
     @Autowired
     private ActivityFormRepo activityFormRepo;
+
+    public ActivityFormController(PdfService pdfService) {
+        this.pdfService = pdfService;
+    }
+
     //get in progress forms
     @GetMapping("/inProgress")
     public String inProgressForms(Model model) {
@@ -104,4 +114,33 @@ public class ActivityFormController {
         model.addAttribute("content", "pages/student-staff-form");
         return "layout";
     }
+    //New Details Page
+    @GetMapping("/details/{id}")
+    public String viewDetails(@PathVariable Long id, Model model) {
+        ActivityForm activity = activityFormRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
+        model.addAttribute("activityForm", activity);
+        model.addAttribute("content",  "pages/details");
+        return "layout";
+    }
+    //Post Mapping for PDF
+    @PostMapping("/print/{id}")
+    public ResponseEntity<byte[]> printActivity(
+            @PathVariable long id,
+            @RequestParam(required = false) List<String> fields) throws Exception {
+
+        ActivityForm activity = activityFormRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
+        byte[] pdf = pdfService.generatePdf(activity, fields);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", "activity.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdf);
+    }
+    //PDF Controller
+
 }

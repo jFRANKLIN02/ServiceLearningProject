@@ -1,0 +1,135 @@
+<head>
+    <title>Title</title>
+</head>
+<body>
+<!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
+<!--    Display Info-->
+    <div class="details-card">
+        <div class="row">
+            <label>Date</label>
+            <span th:text="${activityForm.date}"></span>
+        </div>
+        <div class="row">
+            <label>Start Time</label>
+            <span th:text="${activityForm.startTime}"></span>
+        </div>
+        <div class="row">
+            <label>End Time</label>
+            <span th:text="${activityForm.endTime}"></span>
+        </div>
+        <div class="row">
+            <label>Organization</label>
+            <span th:text="${activityForm.organizationName}"></span>
+        </div>
+        <div class="row">
+            <label>Description</label>
+            <span th:text="${activityForm.activityDescription}"></span>
+        </div>
+    </div>
+<!--    Instructor only-->
+    <div th:if="${activityForm.formType == 'Instructor'}">
+        <h2>Instructor Information</h2>
+        <div class="row">
+            <label>Program</label>
+            <span th:text="${activityForm.program}"></span>
+        </div>
+        <div class="row">
+            <label>Participants</label>
+            <span th:text="${activityForm.participant}"></span>
+        </div>
+        <div class="row">
+            <label>Campus</label>
+            <span th:text="${activityForm.campus}"></span>
+        </div>
+        <div class="row">
+            <label>Quantity</label>
+            <span th:text="${activityForm.quantity}"></span>
+        </div>
+    </div>
+<!--Print Options-->
+<h2>Print Options</h2>
+    <form th:action="@{/activityForm/print/{id}(id=${activityForm.id})}" method="post">
+        <label>
+            <input type="checkbox" name="fields" value="date" checked>
+            Date
+        </label>
+        <label>
+            <input type="checkbox" name="fields" value="startTime" checked>
+            Start Time
+        </label>
+        <label>
+            <input type="checkbox" name="fields" value="endTime">
+            End Time
+        </label>
+        <label>
+            <input type="checkbox" name="fields" value="organizationName">
+            Organization
+        </label>
+        <label>
+            <input type="checkbox" name="fields" value="activityDescription">
+            Description
+        </label>
+        <label>
+            <input type="checkbox" name="fields" value="imagePath"> Images
+        </label>
+<!--&lt;!&ndash;        instructor only&ndash;&gt;-->
+        <div th:if="${activityForm.formType == 'Instructor'}">
+            <label>
+                <input type="checkbox" name="fields" value="program">
+                Program
+            </label>
+            <label>
+                <input type="checkbox" name="fields" value="participant">
+                Participants
+            </label>
+            <label>
+                <input type="checkbox" name="fields" value="campus">
+                Campus
+            </label>
+            <label>
+                <input type="checkbox" name="fields" value="quantity">
+                Quantity
+            </label>
+        </div>
+        <button type="submit" formtarget="_blank">
+            Generate PDF
+        </button>
+    </form>
+<!--    <form th:action="@{/activity/print/{id}(id=${activityForm.id})}" method="post">-->
+<!--        <label>-->
+<!--            <input type="checkbox" name="fields" value="date" checked>-->
+<!--            Date-->
+<!--        </label>-->
+<!--        <label>-->
+<!--            <input type="checkbox" name="fields" value="organizationName" checked>-->
+<!--            Organization-->
+<!--        </label>-->
+<!--        <label>-->
+<!--            <input type="checkbox" name="fields" value="contactName">-->
+<!--            Contact Name-->
+<!--        </label>-->
+<!--        <label>-->
+<!--            <input type="checkbox" name="fields" value="activityDescription" checked>-->
+<!--            Description-->
+<!--        </label>-->
+<!--&lt;!&ndash;Instructor Only&ndash;&gt;-->
+<!--        <div th:if="${activityForm.formType == 'Instructor'}">-->
+<!--            <label>-->
+<!--                <input type="checkbox" name="fields" value="program" checked>-->
+<!--                Program-->
+<!--            </label>-->
+<!--            <label>-->
+<!--                <input type="checkbox" name="fields" value="participant" checked>-->
+<!--                Participants-->
+<!--            </label>-->
+<!--            <label>-->
+<!--                <input type="checkbox" name="fields" value="campus">-->
+<!--                Campus-->
+<!--            </label>-->
+<!--            <label>-->
+<!--                <input type="checkbox" name="fields" value="quantity">-->
+<!--                Quantity-->
+<!--            </label>-->
+<!--        </div>-->
+<!--    </form>-->
+</body>

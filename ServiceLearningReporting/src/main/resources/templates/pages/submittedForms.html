@@ -15,6 +15,7 @@
                 <th>Org Name</th>
                 <th>Activity Date</th>
                 <th>Creation Date</th> <!-- auto generated local time field-->
+                <th>Form Type</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -25,13 +26,14 @@
                 <td th:text="${activityForm.contactName}"></td>
                 <td th:text="${activityForm.organizationName}"></td>
                 <td th:text="${activityForm.date}"></td>
-                <td th:text="${{activityForm.timestamp}}"></td>
+                <td th:text="${activityForm.timestamp}"></td>
+                <td th:text="${activityForm.formType}"></td>
                 <!--edit/details-->
                 <td>
                     <a th:href="@{/activityForm/edit/{id}(id=${activityForm.id})}">
                         Edit
                     </a>
-                    <a th:href="@{/activityForm/view/{id}(id=${activityForm.id})}">
+                    <a th:href="@{/activityForm/details/{id}(id=${activityForm.id})}">
                         Details
                     </a>
                 </td>

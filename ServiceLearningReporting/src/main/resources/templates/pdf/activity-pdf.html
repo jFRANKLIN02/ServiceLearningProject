@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <style>
+            body{
+                font-family: Arial;
+            }
+            h1{
+                text-align:center;
+            }
+            .section{
+                margin-top:20px;
+            }
+            .label{
+                font-weight:bold;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Activity Report</h1>
+        <div class="section">
+            <p th:if="${fields.contains('date')}">
+                <span class="label">Date:</span>
+                <span th:text="${activity.date}"></span>
+            </p>
+            <p th:if="${fields.contains('startTime')}">
+                <span class="label">Start Time:</span>
+                <span th:text="${activity.startTime}"></span>
+            </p>
+            <p th:if="${fields.contains('endTime')}">
+                <span class="label">End Time:</span>
+                <span th:text="${activity.endTime}"></span>
+            </p>
+            <p th:if="${fields.contains('organizationName')}">
+                <span class="label">Organization:</span>
+                <span th:text="${activity.organizationName}"></span>
+            </p>
+            <p th:if="${fields.contains('contactName')}">
+                <span class="label">Contact:</span>
+                <span th:text="${activity.contactName}"></span>
+            </p>
+            <p th:if="${fields.contains('city')}">
+                <span class="label">City:</span>
+                <span th:text="${activity.city}"></span>
+            </p>
+            <p th:if="${fields.contains('activityDescription')}">
+                <span class="label">Description:</span>
+                <span th:text="${activity.activityDescription}"></span>
+            </p>
+            <img th:if="${activity.imagePath != null}"
+                 th:src="@{${activity.imagePath}}"
+                 style="width:300px" alt="altimg"/>
+        </div>
+        <div class="section" th:if="${activity.formType == 'Instructor'}">
+            <h2>Instructor Information</h2>
+            <p th:if="${fields.contains('program')}">
+                <span class="label">Program:</span>
+                <span th:text="${activity.program}"></span>
+            </p>
+            <p th:if="${fields.contains('participant')}">
+                <span class="label">Participants:</span>
+                <span th:text="${activity.participant}"></span>
+            </p>
+            <p th:if="${fields.contains('campus')}">
+                <span class="label">Campus:</span>
+                <span th:text="${activity.campus}"></span>
+            </p>
+            <p th:if="${fields.contains('quantity')}">
+                <span class="label">Quantity:</span>
+                <span th:text="${activity.quantity}"></span>
+            </p>
+        </div>
+    </body>
+</html>

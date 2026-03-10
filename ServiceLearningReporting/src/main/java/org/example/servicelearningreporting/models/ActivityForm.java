@@ -22,7 +22,7 @@ public class ActivityForm {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
     private LocalDateTime timestamp;
-    @DateTimeFormat(pattern="yyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -34,7 +34,7 @@ public class ActivityForm {
     private String phone;
     private String activityDescription;
     private double donations;
-    private String imagePath;
+    private String imagePath;//should be a list of 5?
     //new field
     private boolean submitted;
 
