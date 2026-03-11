@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Activity Report Preview</title>
+    <link rel="stylesheet" th:href="@{/css/details-css.css}">
+    <style>
+        .print-header{
+            text-align:center;
+            margin-bottom:30px;
+        }
+        .print-buttons{
+            margin-top:30px;
+            display:flex;
+            gap:15px;
+        }
+        .print-btn{
+            background:var(--ocean-blue);
+            color:white;
+            padding:10px 18px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+        .cancel-btn{
+            background:var(--field-gold);
+            color:white;
+            padding:10px 18px;
+            border:none;
+            border-radius:6px;
+        }
+        @media print{
+            .print-buttons{
+                display:none;
+            }
+            body{
+                background:white;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="print-header">
+        <h1>Service Learning Activity Report</h1>
+        <p>NBCC Service Learning Record</p>
+    </div>
+    <div class="details-card">
+        <div th:if="${fields.contains('date')}" class="row">
+            <span class="label">Date</span>
+            <span class="value" th:text="${activityForm.date}"></span>
+        </div>
+        <div th:if="${fields.contains('startTime')}" class="row">
+            <span class="label">Start Time</span>
+            <span class="value" th:text="${activityForm.startTime}"></span>
+        </div>
+        <div th:if="${fields.contains('endTime')}" class="row">
+            <span class="label">End Time</span>
+            <span class="value" th:text="${activityForm.endTime}"></span>
+        </div>
+        <div th:if="${fields.contains('organizationName')}" class="row">
+            <span class="label">Organization</span>
+            <span class="value" th:text="${activityForm.organizationName}"></span>
+        </div>
+        <div th:if="${fields.contains('contactName')}" class="row">
+            <span class="label">Contact</span>
+            <span class="value" th:text="${activityForm.contactName}"></span>
+        </div>
+        <div th:if="${fields.contains('city')}" class="row">
+            <span class="label">City</span>
+            <span class="value" th:text="${activityForm.city}"></span>
+        </div>
+        <div th:if="${fields.contains('activityDescription')}" class="row">
+            <span class="label">Description</span>
+            <span class="value" th:text="${activityForm.activityDescription}"></span>
+        </div>
+    </div>
+    <div class="details-card" th:if="${activityForm.formType == 'Instructor'}">
+        <h2>Instructor Information</h2>
+        <div th:if="${fields.contains('program')}" class="row">
+            <span class="label">Program</span>
+            <span class="value" th:text="${activityForm.program}"></span>
+        </div>
+        <div th:if="${fields.contains('participant')}" class="row">
+            <span class="label">Participants</span>
+            <span class="value" th:text="${activityForm.participant}"></span>
+        </div>
+        <div th:if="${fields.contains('campus')}" class="row">
+            <span class="label">Campus</span>
+            <span class="value" th:text="${activityForm.campus}"></span>
+        </div>
+        <div th:if="${fields.contains('quantity')}" class="row">
+            <span class="label">Quantity</span>
+            <span class="value" th:text="${activityForm.quantity}"></span>
+        </div>
+    </div>
+    <div class="button-row">
+        <button class="print-button" onclick="window.print()">
+            Print / Save PDF
+        </button>
+        <a th:href="@{/activityForm/details/{id}(id=${activityForm.id})}" class="print-button">
+            Cancel
+        </a>
+    </div>
+</div>
+</body>
+</html>

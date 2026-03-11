@@ -1,83 +1,263 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Service Learning Activity Log</title>
-</head>
-<body>
-<div>
-    <h1>LOG SERVICE LEARNING ACTIVITY</h1>
-    <button>FR</button>
-</div><br>
-<!--Dates-->
-<div>
-    <label>Date (Activity Logged): </label>
-    <input type="date">
-</div><br>
-<div>
-    <label>Date of Project: </label>
-    <input type="date">
-</div><br>
-<!--Times-->
-<div>
-    <label>Start Time: </label>
-    <input type="time">
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Service Learning - Instructor Log Form</title>
+    </head>
+    <body>
+        <div class="container">
+        <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
+            <form th:object="${activityForm}" method="post">
+                <div>
+                    <h1>LOG SERVICE LEARNING ACTIVITY</h1>
+                    <button>FR</button>
+                </div>
+                <!--Hidden-->
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{formType}"/>
+                <!--Dates-->
+                <div>
+                    <label>Log Date: </label>
+                    <input type="text"
+                           th:value="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd HH:mm')}"
+                           readonly>
+                </div>
+                <div>
+                    <label>Date of Activity:</label>
+                    <input type="date" th:field="*{date}" required>
+                    <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+                </div>
+                <!--Times-->
+                <div>
+                    <label>Start Time: </label>
+                    <input type="time" th:field="*{startTime}" required>
+                    <label>End Time: </label>
+                    <input type="time" th:field="*{endTime}" required>
+                    <label>Total Time:</label>
+                    <input type="text" id="totalHours" th:field="*{totalHours}" readonly>
+                </div>
+                <!--Instructor Specific-->
+                <div class="container">
+                    <h1>Participants</h1>
+                    <label>Program of Study: </label>
+                    <select th:field="*{program}" th:disabled="${readOnly}" required>
+                        <option value="">-- Select a Program --</option>
+                        <option value="Accounting and Payroll Administration">Accounting and Payroll Administration</option>
+                        <option value="Administrative Professional">Administrative Professional</option>
+                        <option value="Administrative Professional: Health Services">Administrative Professional: Health Services</option>
+                        <option value="Administrative Professional: Legal Services">Administrative Professional: Legal Services</option>
+                        <option value="Animation and Graphics">Animation and Graphics</option>
+                        <option value="Applied Community Planning">Applied Community Planning</option>
+                        <option value="Applied Construction Management">Applied Construction Management</option>
+                        <option value="Auto Body and Collision Technician">Auto Body and Collision Technician</option>
+                        <option value="Automotive Service Technician">Automotive Service Technician</option>
+                        <option value="Automotive Technology">Automotive Technology</option>
+                        <option value="Building Engineering Technology (Optional Co-op)">Building Engineering Technology (Optional Co-op)</option>
+                        <option value="Building Systems Engineering Technology">Building Systems Engineering Technology</option>
+                        <option value="Business Administration: Accounting">Business Administration: Accounting</option>
+                        <option value="Business Administration: Financial Management">Business Administration: Financial Management</option>
+                        <option value="Business Administration: Management">Business Administration: Management</option>
+                        <option value="Business Administration: Marketing">Business Administration: Marketing</option>
+                        <option value="Business Fundamentals">Business Fundamentals</option>
+                        <option value="Carpentry">Carpentry</option>
+                        <option value="Carpentry (Optional Co-op)">Carpentry (Optional Co-op)</option>
+                        <option value="Chemical Technology (Optional Co-op)">Chemical Technology (Optional Co-op)</option>
+                        <option value="Child and Youth Care">Child and Youth Care</option>
+                        <option value="Civil Engineering Technician">Civil Engineering Technician</option>
+                        <option value="Civil Engineering Technology (Optional Co-op)">Civil Engineering Technology (Optional Co-op)</option>
+                        <option value="Culinary Arts">Culinary Arts</option>
+                        <option value="Culinary Arts Management">Culinary Arts Management</option>
+                        <option value="Digital Marketing">Digital Marketing</option>
+                        <option value="Early Childhood Education">Early Childhood Education</option>
+                        <option value="Educational Support">Educational Support</option>
+                        <option value="Electrical and Electronics Engineering Technician">Electrical and Electronics Engineering Technician</option>
+                        <option value="Electrical Engineering Technology (Optional Co-op)">Electrical Engineering Technology (Optional Co-op)</option>
+                        <option value="Electrical, Instrumentation and Controls Technician (Optional Co-op)">Electrical, Instrumentation and Controls Technician (Optional Co-op)</option>
+                        <option value="Electrical: Construction">Electrical: Construction</option>
+                        <option value="Electrical: Industrial">Electrical: Industrial</option>
+                        <option value="Electronics Engineering Technology (Optional Co-op)">Electronics Engineering Technology (Optional Co-op)</option>
+                        <option value="Firefighter*">Firefighter*</option>
+                        <option value="Graphic Design">Graphic Design</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Heavy Duty Equipment / Truck and Transport Repair">Heavy Duty Equipment / Truck and Transport Repair</option>
+                        <option value="Heavy Duty Equipment Technician (Optional Co-op)">Heavy Duty Equipment Technician (Optional Co-op)</option>
+                        <option value="Heavy Equipment Operator*">Heavy Equipment Operator*</option>
+                        <option value="Hospitality and Tourism Management">Hospitality and Tourism Management</option>
+                        <option value="Hotel & Restaurant Management">Hotel & Restaurant Management</option>
+                        <option value="Hotel & Restaurant Operations">Hotel & Restaurant Operations</option>
+                        <option value="Human Resources Management">Human Resources Management</option>
+                        <option value="Human Service Practitioner">Human Service Practitioner</option>
+                        <option value="HVAC: Sheet Metal Fabrication">HVAC: Sheet Metal Fabrication</option>
+                        <option value="Industrial Mechanics">Industrial Mechanics</option>
+                        <option value="Information Technology: Business Analysis">Information Technology: Business Analysis</option>
+                        <option value="Information Technology: Business and Advanced Analytics">Information Technology: Business and Advanced Analytics</option>
+                        <option value="Information Technology: Cybersecurity">Information Technology: Cybersecurity</option>
+                        <option value="Information Technology: Data Analytics">Information Technology: Data Analytics</option>
+                        <option value="Information Technology: Game Development">Information Technology: Game Development</option>
+                        <option value="Information Technology: Network Administration">Information Technology: Network Administration</option>
+                        <option value="Information Technology: Quality Assurance Testing">Information Technology: Quality Assurance Testing</option>
+                        <option value="Information Technology: Software Development">Information Technology: Software Development</option>
+                        <option value="Justice Studies: Police Foundations">Justice Studies: Police Foundations</option>
+                        <option value="Justice Studies: Public Safety">Justice Studies: Public Safety</option>
+                        <option value="Machinist">Machinist</option>
+                        <option value="Marine Diesel Mechanics">Marine Diesel Mechanics</option>
+                        <option value="Mechanical Engineering Technology (Optional Co-op)">Mechanical Engineering Technology (Optional Co-op)</option>
+                        <option value="Mechanical Technician (Optional Co-op)">Mechanical Technician (Optional Co-op)</option>
+                        <option value="Mechanized Forest Equipment Operator*">Mechanized Forest Equipment Operator*</option>
+                        <option value="Medical Laboratory Assistant">Medical Laboratory Assistant</option>
+                        <option value="Medical Laboratory Technology">Medical Laboratory Technology</option>
+                        <option value="Metal Fabrication">Metal Fabrication</option>
+                        <option value="Mobile Crane Operator*">Mobile Crane Operator*</option>
+                        <option value="Motorcycle Repair">Motorcycle Repair</option>
+                        <option value="Non-Profit Leadership">Non-Profit Leadership</option>
+                        <option value="Opticianry">Opticianry</option>
+                        <option value="Personal Support Worker Acute Care">Personal Support Worker Acute Care</option>
+                        <option value="Pharmacy Assistant">Pharmacy Assistant</option>
+                        <option value="Pharmacy Technician">Pharmacy Technician</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Power Engineering Technology (Optional Co-op)">Power Engineering Technology (Optional Co-op)</option>
+                        <option value="Powerline Technician*">Powerline Technician*</option>
+                        <option value="Practical Nurse">Practical Nurse</option>
+                        <option value="Precision Machining">Precision Machining</option>
+                        <option value="Process Control Technician (Optional Co-op)">Process Control Technician (Optional Co-op)</option>
+                        <option value="Refrigeration and Air Conditioning Technician">Refrigeration and Air Conditioning Technician</option>
+                        <option value="Respiratory Therapy">Respiratory Therapy</option>
+                        <option value="Skilled Trades Techniques">Skilled Trades Techniques</option>
+                        <option value="Social Service Community Worker">Social Service Community Worker</option>
+                        <option value="Steamfitting/Pipefitting">Steamfitting/Pipefitting</option>
+                        <option value="Supply Chain Management and Logistics">Supply Chain Management and Logistics</option>
+                        <option value="Sustainable Agriculture (Optional Co-op)">Sustainable Agriculture (Optional Co-op)</option>
+                        <option value="Truck and Transport Technician (Optional Co-op)">Truck and Transport Technician (Optional Co-op)</option>
+                        <option value="Welding and Metal Fabrication">Welding and Metal Fabrication</option>
+                        <option value="Welding Engineering Technology (Optional Co-op)">Welding Engineering Technology (Optional Co-op)</option>
+                        <option value="Welding Plus Pressure Welding">Welding Plus Pressure Welding</option>
+                        <option value="Wind and Solar Energy Technician (Optional Co-op)">Wind and Solar Energy Technician (Optional Co-op)</option>
+                    </select>
+                    <br><br>
+                    <label>Participant Type: </label>
+                    <select th:field="*{participant}" th:disabled="${readOnly}" required>
+                        <option value="">-- Select Participant Type --</option>
+                        <option value="Student">Student</option>
+                        <option value="Instructor">Instructor</option>
+                    </select>
+                    <br><br>
+                    <label>Quantity: </label>
+                    <input type="number" step="1" th:field="*{quantity}" min="0" th:readonly="${readOnly}" required>
+                    <br><br>
+                    <label>Campus: </label>
+                    <select th:field="*{campus}" th:disabled="${readOnly}" required>
+                        <option value="">-- Select Campus --</option>
+                        <option value="Fredericton">Fredericton</option>
+                        <option value="Miramichi">Miramichi</option>
+                        <option value="Moncton">Moncton</option>
+                        <option value="Saint John">Saint John</option>
+                        <option value="St. Andrews">St. Andrews</option>
+                        <option value="Woodstock">Woodstock</option>
+                    </select>
+                </div>
+                <!--Org Name-->
+                <div>
+                    <label>Name of Organization: </label>
+                    <input type="text" th:field="*{organizationName}" th:readonly="${readOnly}" required>
+                </div>
+                <!--Contact Info-->
+                <div>
+                    <label>Contact Name</label>
+                    <input type="text" th:field="*{contactName}" th:readonly="${readOnly}" required>
 
-    <label>End Time: </label>
-    <input type="time">
+                    <label>City:</label>
+                    <select th:field="*{city}" th:disabled="${readOnly}" required>
+                        <option value="">-- Select a City --</option>
+                        <option value="Fredericton">Fredericton</option>
+                        <option value="Oromocto">Oromocto</option>
+                        <option value="Miramichi">Miramichi</option>
+                        <option value="Moncton">Moncton</option>
+                        <option value="Dieppe">Dieppe</option>
+                        <option value="Riverview">Riverview</option>
+                        <option value="Saint John">Saint John</option>
+                        <option value="Quispamsis">Quispamsis</option>
+                        <option value="Rothesay">Rothesay</option>
+                        <option value="St. Andrews">St. Andrews</option>
+                        <option value="Woodstock">Woodstock</option>
+                    </select>
 
-    <label>Total Hours: </label>
-    <input type="text">
-</div><br>
-<!--Istructor Specific-->
-<div>
-    <label>Program of Study: </label>
-    <input type="text">
+                    <label>Email Address</label>
+                    <input type="email" th:field="*{email}" th:readonly="${readOnly}" required>
 
-    <label>Participant Type: </label>
-    <input type="text">
+                    <label>Phone No.</label>
+                    <input type="tel" th:field="*{phone}" th:readonly="${readOnly}" required>
+                </div>
+                <!--Picture-->
+                <div>
+                    <label>Upload Picture </label>
+                    <button>+</button>
+                </div>
+                <!--Description-->
+                <div>
+                    <label>Activity Description</label><br>
+                    <textarea th:field="*{activityDescription}" th:readonly="${readOnly}" required></textarea>
+                </div>
+                <!--Donations-->
+                <div>
+                    <label>Donations (Cash): </label>
+                    <input type="number" step="0.01" th:field="*{donations}" min="0" th:readonly="${readOnly}">
+                </div>
+                <!--Buttons-->
+                <div th:if="${!readOnly}">
+                    <div th:if="${isEdit}">
+                        <button type="submit" formaction="/activityForm/update">
+                            Update
+                        </button>
 
-    <label>?Amount?: </label>
-    <input type="text">
+                        <button type="submit" onclick="window.location.href='/activityForm/submitted'">
+                            Cancel
+                        </button>
+                    </div>
+                    <div th:if="${!isEdit}">
+                        <button type="submit" formaction="/activityForm/form-save">
+                            Save For Later
+                        </button>
 
-    <label>Campus: </label>
-    <input type="text">
-</div><br>
-<!--Org Name-->
-<div>
-    <label>Name of Organization: </label><br>
-    <input type="text">
-</div><br>
-<!--Contact Info-->
-<div>
-    <label>Contact Name</label>
-    <input type="text">
+                        <button type="submit" formaction="/activityForm/form-submit">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+                <div th:if="${readOnly}">
+                    <button type="button" onclick="window.location.href='/activityForm/submitted'">
+                        Back
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!--JavaScript for total time calculation-->
+        <script>
+            function calculateHours() {
+                const start = document.getElementById("startTime").value;
+                const end = document.getElementById("endTime").value;
 
-    <label>City</label>
-    <input type="text">
+                if (start && end) {
+                    const [startHour, startMinute] = start.split(":").map(Number);
+                    const [endHour, endMinute] = end.split(":").map(Number);
 
-    <label>Email Address</label>
-    <input type="email">
+                    let startTotal = startHour * 60 + startMinute;
+                    let endTotal = endHour * 60 + endMinute;
 
-    <label>Phone No.</label>
-    <input type="tel">
-</div><br>
-<!--Picture-->
-<div>
-    <label>Upload Picture </label>
-    <button>+</button>
-</div><br>
-<!--Description-->
-<div>
-    <label>Activity Description</label><br>
-    <textarea></textarea>
-</div><br>
-<!--Donations/Submit-->
-<div>
-    <label>Donations (Cash): </label>
-    <input type="text">
+                    if (endTotal < startTotal) {
+                        endTotal += 24 * 60;
+                    }
 
-    <button>SUBMIT</button>
-</div><br>
-</body>
+                    const diffMinutes = endTotal - startTotal;
+
+                    const hours = Math.floor(diffMinutes / 60);
+                    const minutes = diffMinutes % 60;
+                    //Readable version
+                    document.getElementById("totalHours").value =
+                        `${hours} hrs ${minutes} min`;
+                }
+            }
+            document.getElementById("startTime").addEventListener("change", calculateHours);
+            document.getElementById("endTime").addEventListener("change", calculateHours);
+        </script>
+    </body>
 </html>

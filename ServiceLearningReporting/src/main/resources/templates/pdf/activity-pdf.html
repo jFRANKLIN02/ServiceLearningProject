@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <style>
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:12px;
+                color:#2f2f2f;
+            }
+            .header{
+                text-align:center;
+                margin-bottom:30px;
+            }
+            .title{
+                font-size:24px;
+                font-weight:bold;
+                color:#007599;
+            }
+            .subtitle{
+                font-size:13px;
+                color:#666;
+            }
+            .section{
+                margin-top:25px;
+            }
+            .section-title{
+                font-size:16px;
+                font-weight:bold;
+                border-bottom:3px solid #a1d8e0;
+                margin-bottom:10px;
+                padding-bottom:4px;
+                color:#007599;
+            }
+            .table{
+                width:100%;
+                border-collapse:collapse;
+            }
+            .table td{
+                padding:8px;
+                border-bottom:1px solid #d9dee3;
+            }
+            .label{
+                font-weight:bold;
+                width:200px;
+            }
+            .image{
+                margin-top:20px;
+                text-align:center;
+            }
+            .image img{
+                width:250px;
+                border:1px solid #d9dee3;
+            }
+            .footer{
+                margin-top:40px;
+                text-align:center;
+                font-size:10px;
+                color:#777;
+            }
+        </style>
+        <title>Activity Form - Details</title>
+    </head>
+    <body>
+            <h1>Activity Report</h1>
+            <div class="section">
+                <p th:if="${fields.contains('date')}">
+                    <span class="label">Date:</span>
+                    <span th:text="${activityForm.date}"></span>
+                </p>
+                <p th:if="${fields.contains('startTime')}">
+                    <span class="label">Start Time:</span>
+                    <span th:text="${activityForm.startTime}"></span>
+                </p>
+                <p th:if="${fields.contains('endTime')}">
+                    <span class="label">End Time:</span>
+                    <span th:text="${activityForm.endTime}"></span>
+                </p>
+                <p th:if="${fields.contains('organizationName')}">
+                    <span class="label">Organization:</span>
+                    <span th:text="${activityForm.organizationName}"></span>
+                </p>
+                <p th:if="${fields.contains('contactName')}">
+                    <span class="label">Contact:</span>
+                    <span th:text="${activityForm.contactName}"></span>
+                </p>
+                <p th:if="${fields.contains('city')}">
+                    <span class="label">City:</span>
+                    <span th:text="${activityForm.city}"></span>
+                </p>
+                <p th:if="${fields.contains('activityDescription')}">
+                    <span class="label">Description:</span>
+                    <span th:text="${activityForm.activityDescription}"></span>
+                </p>
+                <img th:if="${activityForm.imagePath != null}"
+                     th:src="@{${activityForm.imagePath}}"
+                     style="width:300px" alt="altimg"/>
+            </div>
+            <div class="section" th:if="${activityForm.formType == 'Instructor'}">
+                <h2>Instructor Information</h2>
+                <p th:if="${fields.contains('program')}">
+                    <span class="label">Program:</span>
+                    <span th:text="${activityForm.program}"></span>
+                </p>
+                <p th:if="${fields.contains('participant')}">
+                    <span class="label">Participants:</span>
+                    <span th:text="${activityForm.participant}"></span>
+                </p>
+                <p th:if="${fields.contains('campus')}">
+                    <span class="label">Campus:</span>
+                    <span th:text="${activityForm.campus}"></span>
+                </p>
+                <p th:if="${fields.contains('quantity')}">
+                    <span class="label">Quantity:</span>
+                    <span th:text="${activityForm.quantity}"></span>
+                </p>
+            </div>
+    </body>
+</html>
