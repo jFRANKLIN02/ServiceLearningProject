@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface ActivityFormRepo extends JpaRepository<ActivityForm, Long>{
     @Nullable Object findActivityFormBySubmitted(boolean b);
-    List<ActivityForm> findBySubmitted(Boolean submitted);
+    List<ActivityForm> findBySubmitted(boolean submitted);
+    List<ActivityForm> findBySubmittedOrderByDateAsc(boolean submitted);
+    List<ActivityForm> findBySubmittedOrderByDateDesc(boolean submitted);
 }

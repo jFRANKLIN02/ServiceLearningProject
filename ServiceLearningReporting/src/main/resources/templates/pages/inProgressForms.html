@@ -6,6 +6,12 @@
         <h1>
             In-Progress Forms
         </h1>
+        <label>Sort by Activity Date:</label>
+        <select onchange="window.location.href='/activityForm/inProgress?sort=' + this.value">
+            <option value=""></option>
+            <option value="desc">Newest to Oldest</option>
+            <option value="asc">Oldest to Newest</option>
+        </select>
         <!--Table of forms-->
         <table>
             <thead>

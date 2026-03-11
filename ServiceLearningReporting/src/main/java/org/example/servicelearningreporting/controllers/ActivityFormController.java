@@ -28,18 +28,32 @@ public class ActivityFormController {
 
     //get in progress forms
     @GetMapping("/inProgress")
-    public String inProgressForms(Model model) {
+    public String inProgressForms(@RequestParam(required = false) String sort, Model model) {
         model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmitted(false);
+        List<ActivityForm> forms;
+        if ("asc".equals(sort)) {
+            forms = activityFormRepo.findBySubmittedOrderByDateAsc(false);
+        } else if ("desc".equals(sort)) {
+            forms = activityFormRepo.findBySubmittedOrderByDateDesc(false);
+        } else {
+            forms = activityFormRepo.findBySubmitted(false);
+        }
         model.addAttribute("activityForms", forms);
         model.addAttribute("content", "pages/inProgressForms");
         return "layout";
     }
     //Get submitted Forms
     @GetMapping("/submitted")
-    public String submittedForms(Model model) {
+    public String submittedForms(@RequestParam(required = false) String sort, Model model) {
         model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmitted(true);
+        List<ActivityForm> forms;
+        if ("asc".equals(sort)) {
+            forms = activityFormRepo.findBySubmittedOrderByDateAsc(true);
+        } else if ("desc".equals(sort)) {
+            forms = activityFormRepo.findBySubmittedOrderByDateDesc(true);
+        } else {
+            forms = activityFormRepo.findBySubmitted(true);
+        }
         model.addAttribute("activityForms", forms);
         model.addAttribute("content", "pages/submittedForms");
         return "layout";
