@@ -28,10 +28,16 @@ public class ActivityFormController {
 
     //get in progress forms
     @GetMapping("/inProgress")
-    public String inProgressForms(@RequestParam(required = false) String sort, Model model) {
+    public String inProgressForms(
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String search,
+            Model model) {
         model.addAttribute("activityForm", new ActivityForm());
         List<ActivityForm> forms;
-        if ("asc".equals(sort)) {
+        if (search != null && !search.isEmpty()) {
+            forms = activityFormRepo.searchInProgressForms(search);
+        }
+        else if ("asc".equals(sort)) {
             forms = activityFormRepo.findBySubmittedOrderByDateAsc(false);
         } else if ("desc".equals(sort)) {
             forms = activityFormRepo.findBySubmittedOrderByDateDesc(false);
@@ -44,10 +50,16 @@ public class ActivityFormController {
     }
     //Get submitted Forms
     @GetMapping("/submitted")
-    public String submittedForms(@RequestParam(required = false) String sort, Model model) {
+    public String submittedForms(
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String search,
+            Model model) {
         model.addAttribute("activityForm", new ActivityForm());
         List<ActivityForm> forms;
-        if ("asc".equals(sort)) {
+        if (search != null && !search.isEmpty()) {
+            forms = activityFormRepo.searchSubmittedForms(search);
+        }
+        else if ("asc".equals(sort)) {
             forms = activityFormRepo.findBySubmittedOrderByDateAsc(true);
         } else if ("desc".equals(sort)) {
             forms = activityFormRepo.findBySubmittedOrderByDateDesc(true);

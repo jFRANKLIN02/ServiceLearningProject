@@ -6,6 +6,17 @@
         <h1>
             Submitted Forms
         </h1>
+        <!--Search-->
+        <label>Search:</label>
+        <input type="text" id="searchBox" placeholder="Search...">
+        <button onclick="searchSubmittedForms()">Search</button>
+        <script>
+            function searchSubmittedForms() {
+                const query = document.getElementById("searchBox").value;
+                window.location.href = "/activityForm/submitted?search=" + query;
+            }
+        </script>
+        <!--Sort-->
         <label>Sort by Activity Date:</label>
         <select onchange="window.location.href='/activityForm/submitted?sort=' + this.value">
             <option value=""></option>
@@ -26,6 +37,10 @@
             </tr>
             </thead>
             <tbody>
+            <!--If search has no results-->
+            <tr th:if="${#lists.isEmpty(activityForms)}">
+                <td align="center" colspan="7">No results found.</td>
+            </tr>
             <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
             <tr th:each="activityForm : ${activityForms}">
                 <td th:text="${activityForm.id}"></td>
