@@ -1,5 +1,6 @@
 package org.example.servicelearningreporting.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.servicelearningreporting.models.ActivityForm;
 import org.example.servicelearningreporting.repos.ActivityFormRepo;
 import org.example.servicelearningreporting.services.PdfService;
@@ -28,7 +29,11 @@ public class ActivityFormController {
 
     //get in progress forms
     @GetMapping("/inProgress")
-    public String inProgressForms(Model model) {
+    public String inProgressForms(Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
         model.addAttribute("activityForm", new ActivityForm());
         List<ActivityForm> forms = activityFormRepo.findBySubmitted(false);
         model.addAttribute("activityForms", forms);
@@ -37,7 +42,7 @@ public class ActivityFormController {
     }
     //Get submitted Forms
     @GetMapping("/submitted")
-    public String submittedForms(Model model) {
+    public String submittedForms(Model model, HttpSession session) {
         model.addAttribute("activityForm", new ActivityForm());
         List<ActivityForm> forms = activityFormRepo.findBySubmitted(true);
         model.addAttribute("activityForms", forms);
@@ -60,7 +65,7 @@ public class ActivityFormController {
     }
     //Edit submitted form
     @GetMapping("/edit/{id}")
-    public String editSubmittedForm(@PathVariable Long id, Model model) {
+    public String editSubmittedForm(@PathVariable Long id, Model model, HttpSession session) {
         ActivityForm form = activityFormRepo
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
@@ -105,7 +110,7 @@ public class ActivityFormController {
     }
     //View details from submitted form
     @GetMapping("/view/{id}")
-    public String viewSubmittedForm(@PathVariable Long id, Model model) {
+    public String viewSubmittedForm(@PathVariable Long id, Model model, HttpSession session) {
         ActivityForm form = activityFormRepo
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
@@ -116,7 +121,7 @@ public class ActivityFormController {
     }
     //New Details Page
     @GetMapping("/details/{id}")
-    public String viewDetails(@PathVariable Long id, Model model) {
+    public String viewDetails(@PathVariable Long id, Model model, HttpSession session) {
         ActivityForm activity = activityFormRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
         model.addAttribute("activityForm", activity);

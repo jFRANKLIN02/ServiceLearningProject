@@ -46,4 +46,7 @@ public class ActivityForm {
 
     //Student or Instructor indicator
     private String formType;
+
+    //UserId
+    private int userID;
 }

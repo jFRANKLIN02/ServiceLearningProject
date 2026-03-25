@@ -184,10 +184,10 @@ button:hover, .btn:hover {
 /* TOP NAVIGATION BAR */
 /* ===================================== */
 .top-nav {
+    display: flex;
     background-color: var(--ocean-blue);
     padding: 0 40px;
     height: 60px;
-    display: flex;
     align-items: center;
 }
 .top-nav ul {
