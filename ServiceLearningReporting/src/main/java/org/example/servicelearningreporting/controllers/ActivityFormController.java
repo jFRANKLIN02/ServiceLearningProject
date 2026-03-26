@@ -11,8 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -72,14 +77,20 @@ public class ActivityFormController {
     }
     //In progress Post
     @PostMapping("/form-save")
-    public String saveForm(@ModelAttribute ActivityForm activityFormInProgress) {
+    public String saveForm(
+            @ModelAttribute ActivityForm activityFormInProgress,
+            @RequestParam(value = "images", required = false) MultipartFile[] images) throws Exception {
+        handleImageUpload(activityFormInProgress, List.of(images));
         activityFormInProgress.setSubmitted(false);
         activityFormRepo.save(activityFormInProgress);
         return "redirect:/activityForm/inProgress";
     }
     //Completed Post
     @PostMapping("/form-submit")
-    public String saveFormSubmitted(@ModelAttribute ActivityForm activityFormSubmitted) {
+    public String saveFormSubmitted(
+            @ModelAttribute ActivityForm activityFormSubmitted,
+            @RequestParam(value = "images", required = false) MultipartFile[] images) throws Exception {
+        handleImageUpload(activityFormSubmitted, List.of(images));
         activityFormSubmitted.setSubmitted(true);
         activityFormRepo.save(activityFormSubmitted);
         return "redirect:/activityForm/submitted";
@@ -182,5 +193,37 @@ public class ActivityFormController {
 
         return "pdf/activity-preview";
         //return "pdf/activity-pdf";
+    }
+    //Image uploading
+    private void handleImageUpload(ActivityForm form, List<MultipartFile> images) throws Exception {
+        if (images.size() > 5) {
+            throw new RuntimeException("Maximum 5 images allowed");
+        }
+        List<String> paths = new ArrayList<>();
+        for (MultipartFile file : images) {
+            if (file.isEmpty()) continue;
+            //size check
+            if (file.getSize() > 3 * 1024 * 1024) {
+                throw new RuntimeException("File exceeds 3MB");
+            }
+            //type check
+            String contentType = file.getContentType();
+            if (!contentType.equals("image/png") &&
+                    !contentType.equals("image/jpeg") &&
+                    !contentType.equals("image/tiff")) {
+
+                throw new RuntimeException("Only PNG, JPG, TIFF allowed");
+            }
+            //save
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path uploadPath = Paths.get("uploads");
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath);
+            paths.add("/uploads/" + fileName);
+        }
+        form.setImagePaths(paths);
     }
 }
