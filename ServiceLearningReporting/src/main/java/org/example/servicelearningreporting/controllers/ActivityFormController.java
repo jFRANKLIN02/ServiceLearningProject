@@ -2,6 +2,7 @@ package org.example.servicelearningreporting.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.servicelearningreporting.models.ActivityForm;
+import org.example.servicelearningreporting.models.UserResponse;
 import org.example.servicelearningreporting.repos.ActivityFormRepo;
 import org.example.servicelearningreporting.services.PdfService;
 import org.springframework.http.HttpHeaders;
@@ -30,12 +31,10 @@ public class ActivityFormController {
     //get in progress forms
     @GetMapping("/inProgress")
     public String inProgressForms(Model model, HttpSession session) {
-        if (session.getAttribute("user") == null) {
-            return "redirect:/login";
-        }
+        UserResponse user = (UserResponse) session.getAttribute("user");
 
         model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmitted(false);
+        List<ActivityForm> forms = activityFormRepo.findBySubmittedAndUserID(false, user.getUserID());
         model.addAttribute("activityForms", forms);
         model.addAttribute("content", "pages/inProgressForms");
         return "layout";
@@ -43,23 +42,31 @@ public class ActivityFormController {
     //Get submitted Forms
     @GetMapping("/submitted")
     public String submittedForms(Model model, HttpSession session) {
+        UserResponse user = (UserResponse) session.getAttribute("user");
+
         model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmitted(true);
+        List<ActivityForm> forms = activityFormRepo.findBySubmittedAndUserID(true, user.getUserID());
         model.addAttribute("activityForms", forms);
         model.addAttribute("content", "pages/submittedForms");
         return "layout";
     }
     //In progress Post
     @PostMapping("/form-save")
-    public String saveForm(@ModelAttribute ActivityForm activityFormInProgress) {
+    public String saveForm(@ModelAttribute ActivityForm activityFormInProgress, HttpSession session) {
+        UserResponse user = (UserResponse) session.getAttribute("user");
+
         activityFormInProgress.setSubmitted(false);
+        activityFormInProgress.setUserID(user.getUserID());
         activityFormRepo.save(activityFormInProgress);
         return "redirect:/activityForm/inProgress";
     }
     //Completed Post
     @PostMapping("/form-submit")
-    public String saveFormSubmitted(@ModelAttribute ActivityForm activityFormSubmitted) {
+    public String saveFormSubmitted(@ModelAttribute ActivityForm activityFormSubmitted, HttpSession session) {
+        UserResponse user = (UserResponse) session.getAttribute("user");
+
         activityFormSubmitted.setSubmitted(true);
+        activityFormSubmitted.setUserID(user.getUserID());
         activityFormRepo.save(activityFormSubmitted);
         return "redirect:/activityForm/submitted";
     }
