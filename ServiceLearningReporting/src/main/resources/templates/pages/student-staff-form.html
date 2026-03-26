@@ -27,7 +27,7 @@
             <form th:object="${activityForm}" method="post">
                 <div>
                     <h1>LOG SERVICE LEARNING ACTIVITY</h1>
-                    <button>FR</button>
+                    <button type="button">FR</button>
                 </div>
                 <!--Hidden-->
                 <input type="hidden" th:field="*{id}"/>
@@ -102,8 +102,12 @@
                             Update
                         </button>
 <!--                        <a class="btn" th:href="@{/activityForm/${returnUrl}}">Cancel</a>-->
-                        <button type="button" class="btn" onclick="goBack()">Go Back</button>
-                            <button type="submit" class="btn" formaction="/activityForm/form-submit">Submit</button>
+                        <button type="button" class="btn" onclick="goBack()">Go Back</button><br><br>
+                        <div th:if="${isSubmitted == false}">
+                            <button type="submit" class="btn-primary" formaction="/activityForm/form-submit">
+                                Submit
+                            </button>
+                        </div>
                     </div>
                     <div th:if="${!isEdit}">
                         <button type="submit" formaction="/activityForm/form-save">

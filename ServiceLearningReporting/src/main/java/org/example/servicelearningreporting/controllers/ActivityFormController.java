@@ -87,6 +87,14 @@ public class ActivityFormController {
         ActivityForm form = activityFormRepo
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid form ID: " + id));
+        boolean isSubmitted = form.isSubmitted();
+        if (isSubmitted) {
+            model.addAttribute("isSubmmitted", true);
+        }
+        else {
+            model.addAttribute("isSubmitted", false);
+        }
+        System.out.println("isSubmitted: " + isSubmitted);
         form.setTimestamp(LocalDateTime.now());
         model.addAttribute("activityForm", form);
         model.addAttribute("readOnly", false);
