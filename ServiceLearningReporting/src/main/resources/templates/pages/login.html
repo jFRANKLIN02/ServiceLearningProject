@@ -5,10 +5,14 @@
     <title>Service Learning - Login</title>
 </head>
 <body>
-    <form method="POST" th:action="@{/login}">
-        <input type="text" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Login</button>
-    </form>
+<div align="center">
+    <div class="login-container">
+        <form method="POST" th:action="@{/login}">
+            <input type="text" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

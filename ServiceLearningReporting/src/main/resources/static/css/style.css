@@ -242,3 +242,15 @@ button:hover, .btn:hover {
     flex: 1;
     padding: 40px;
 }
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    max-width: 25em;
+    margin: 1em;
+    background: var(--background-light);
+    padding: 40px;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+}

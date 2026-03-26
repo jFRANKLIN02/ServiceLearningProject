@@ -1,5 +1,6 @@
 package org.example.servicelearningreporting.controllers;
 
+import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 import org.example.servicelearningreporting.models.UserResponse;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,9 @@ import java.util.Map;
 @Controller
 public class LoginController {
     @GetMapping("/login")
-    public String login() {
-        return "pages/login";
+    public String login(Model model, HttpSession session) {
+        model.addAttribute("content", "pages/login");
+        return "layout";
     }
     @PostMapping("/login")
     public String login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session) {

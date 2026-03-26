@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,22 +53,32 @@ public class ActivityFormController {
     }
     //In progress Post
     @PostMapping("/form-save")
-    public String saveForm(@ModelAttribute ActivityForm activityFormInProgress, HttpSession session) {
+    public String saveForm(@ModelAttribute ActivityForm activityFormInProgress, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         UserResponse user = (UserResponse) session.getAttribute("user");
-
-        activityFormInProgress.setSubmitted(false);
-        activityFormInProgress.setUserID(user.getUserID());
-        activityFormRepo.save(activityFormInProgress);
+        try {
+            activityFormInProgress.setSubmitted(false);
+            activityFormInProgress.setUserID(user.getUserID());
+            activityFormRepo.save(activityFormInProgress);
+            model.addAttribute("successMessage", "Save Successful");
+        }
+        catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to Save");
+        }
         return "redirect:/activityForm/inProgress";
     }
     //Completed Post
     @PostMapping("/form-submit")
-    public String saveFormSubmitted(@ModelAttribute ActivityForm activityFormSubmitted, HttpSession session) {
+    public String saveFormSubmitted(@ModelAttribute ActivityForm activityFormSubmitted, HttpSession session, RedirectAttributes redirectAttributes) {
         UserResponse user = (UserResponse) session.getAttribute("user");
-
-        activityFormSubmitted.setSubmitted(true);
-        activityFormSubmitted.setUserID(user.getUserID());
-        activityFormRepo.save(activityFormSubmitted);
+        try {
+            activityFormSubmitted.setSubmitted(true);
+            activityFormSubmitted.setUserID(user.getUserID());
+            activityFormRepo.save(activityFormSubmitted);
+            redirectAttributes.addFlashAttribute("successMessage", "Submit Succesful");
+        }
+        catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to Submit. Please Try Again");
+        }
         return "redirect:/activityForm/submitted";
     }
     //Edit submitted form
@@ -85,28 +96,34 @@ public class ActivityFormController {
     }
     @PostMapping("/update")
     public String updateSubmittedForm(@ModelAttribute ActivityForm activityFormSubmitted,
-                                      BindingResult result, Model model) {
-        if(result.hasErrors()) {
-            model.addAttribute("isEdit", true);
-            return "activityForm/form";
+                                      BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            if (result.hasErrors()) {
+                model.addAttribute("isEdit", true);
+                return "activityForm/form";
+            }
+            ActivityForm existing = activityFormRepo
+                    .findById(activityFormSubmitted.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid ID"));
+            //Manually set necessary fields (so submitted and id cannot be affected)
+            existing.setDate(activityFormSubmitted.getDate());//activity date
+            existing.setStartTime(activityFormSubmitted.getStartTime());
+            existing.setEndTime(activityFormSubmitted.getEndTime());
+            existing.setTotalHours(activityFormSubmitted.getTotalHours());
+            existing.setOrganizationName(activityFormSubmitted.getOrganizationName());
+            existing.setContactName(activityFormSubmitted.getContactName());
+            existing.setCity(activityFormSubmitted.getCity());
+            existing.setEmail(activityFormSubmitted.getEmail());
+            existing.setPhone(activityFormSubmitted.getPhone());
+            existing.setActivityDescription(activityFormSubmitted.getActivityDescription());
+            existing.setDonations(activityFormSubmitted.getDonations());
+            //Save
+            activityFormRepo.save(existing);
+            redirectAttributes.addFlashAttribute("successMessage", "Update Successful");
         }
-        ActivityForm existing = activityFormRepo
-                .findById(activityFormSubmitted.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid ID"));
-        //Manually set necessary fields (so submitted and id cannot be affected)
-        existing.setDate(activityFormSubmitted.getDate());//activity date
-        existing.setStartTime(activityFormSubmitted.getStartTime());
-        existing.setEndTime(activityFormSubmitted.getEndTime());
-        existing.setTotalHours(activityFormSubmitted.getTotalHours());
-        existing.setOrganizationName(activityFormSubmitted.getOrganizationName());
-        existing.setContactName(activityFormSubmitted.getContactName());
-        existing.setCity(activityFormSubmitted.getCity());
-        existing.setEmail(activityFormSubmitted.getEmail());
-        existing.setPhone(activityFormSubmitted.getPhone());
-        existing.setActivityDescription(activityFormSubmitted.getActivityDescription());
-        existing.setDonations(activityFormSubmitted.getDonations());
-        //Save
-        activityFormRepo.save(existing);
+        catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Update Failed. Please Try Again");
+        }
         boolean isSubmitted = activityFormSubmitted.isSubmitted();
         if (isSubmitted) {
             return "redirect:/activityForm/submitted";

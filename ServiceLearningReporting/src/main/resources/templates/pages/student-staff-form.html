@@ -9,6 +9,18 @@
             window.history.back();
         }
     </script>
+    <script th:inline="javascript">
+        const successMessage = /*[[${successMessage}]]*/ null;
+        const errorMessage = /*[[${errorMessage}]]*/ null;
+
+        if (successMessage) {
+            alert(successMessage);
+        }
+
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+    </script>
     <body>
         <div class="container">
         <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
@@ -25,6 +37,7 @@
                     <input type="text"
                            th:value="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd HH:mm')}"
                            readonly>
+                    <input type="hidden" th:field="*{timestamp}"/>
                 </div>
                 <!-- Date -->
                 <div>
@@ -35,9 +48,9 @@
                 <!-- Times -->
                 <div>
                     <label>Start Time:</label>
-                    <input type="time" th:field="*{startTime}" required>
+                    <input type="time" id="startTime" th:field="*{startTime}" required>
                     <label>End Time:</label>
-                    <input type="time" th:field="*{endTime}" required>
+                    <input type="time" id="endTime" th:field="*{endTime}" required>
                     <label>Total Time:</label>
                     <input type="text" id="totalHours" th:field="*{totalHours}">
                 </div>
@@ -85,11 +98,12 @@
                <!-- Submit Button -->
                 <div th:if="${!readOnly}">
                     <div th:if="${isEdit}">
-                        <button type="submit" formaction="/activityForm/update">
+                        <button type="submit" class="btn" formaction="/activityForm/update">
                             Update
                         </button>
 <!--                        <a class="btn" th:href="@{/activityForm/${returnUrl}}">Cancel</a>-->
                         <button type="button" class="btn" onclick="goBack()">Go Back</button>
+                            <button type="submit" class="btn" formaction="/activityForm/form-submit">Submit</button>
                     </div>
                     <div th:if="${!isEdit}">
                         <button type="submit" formaction="/activityForm/form-save">

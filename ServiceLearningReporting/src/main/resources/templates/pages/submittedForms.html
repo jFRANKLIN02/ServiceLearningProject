@@ -26,7 +26,7 @@
                 <td th:text="${activityForm.contactName}"></td>
                 <td th:text="${activityForm.organizationName}"></td>
                 <td th:text="${activityForm.date}"></td>
-                <td th:text="${activityForm.timestamp}"></td>
+                <td th:text="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd')}"></td>
                 <td th:text="${activityForm.formType}"></td>
                 <!--edit/details-->
                 <td>
