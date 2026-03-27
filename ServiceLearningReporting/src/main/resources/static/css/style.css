@@ -184,10 +184,10 @@ button:hover, .btn:hover {
 /* TOP NAVIGATION BAR */
 /* ===================================== */
 .top-nav {
+    display: flex;
     background-color: var(--ocean-blue);
     padding: 0 40px;
     height: 60px;
-    display: flex;
     align-items: center;
 }
 .top-nav ul {
@@ -241,4 +241,16 @@ button:hover, .btn:hover {
 .main-content {
     flex: 1;
     padding: 40px;
+}
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    max-width: 25em;
+    margin: 1em;
+    background: var(--background-light);
+    padding: 40px;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
 }
