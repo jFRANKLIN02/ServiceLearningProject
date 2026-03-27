@@ -21,6 +21,7 @@
                     <input type="text"
                            th:value="${#temporals.format(activityForm.timestamp, 'yyyy-MM-dd HH:mm')}"
                            readonly>
+                    <input type="hidden" th:field="*{timestamp}"/>
                 </div>
                 <div>
                     <label>Date of Activity:</label>
