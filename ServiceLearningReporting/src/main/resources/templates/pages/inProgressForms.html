@@ -23,6 +23,13 @@
             <option value="desc">Newest to Oldest</option>
             <option value="asc">Oldest to Newest</option>
         </select>
+        <!--Pagination-->
+        <label>Show:</label>
+        <select onchange="window.location.href='/activityForm/inProgress?size=' + this.value">
+            <option value="25" th:selected="${size == 25}">25</option>
+            <option value="50" th:selected="${size == 50}">50</option>
+            <option value="100" th:selected="${size == 100}">100</option>
+        </select>
         <!--Table of forms-->
         <table>
             <thead>
@@ -61,5 +68,17 @@
                 </tr>
             </tbody>
         </table>
+        <!--Pagination-->
+        <div>
+            <a th:if="${currentPage > 0}"
+               th:href="@{/activityForm/inProgress(page=${currentPage - 1}, size=${size})}">
+                Previous
+            </a>
+            <span th:text="'Page ' + (${currentPage}+1) + ' of ' + ${totalPages}"></span>
+            <a th:if="${currentPage < totalPages - 1}"
+               th:href="@{/activityForm/inProgress(page=${currentPage + 1}, size=${size})}">
+                Next
+            </a>
+        </div>
     </div>
 </body>
