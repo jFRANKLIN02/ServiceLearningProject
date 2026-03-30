@@ -9,18 +9,6 @@
             window.history.back();
         }
     </script>
-    <script th:inline="javascript">
-        const successMessage = /*[[${successMessage}]]*/ null;
-        const errorMessage = /*[[${errorMessage}]]*/ null;
-
-        if (successMessage) {
-            alert(successMessage);
-        }
-
-        if (errorMessage) {
-            alert(errorMessage);
-        }
-    </script>
     <body>
         <div class="container">
         <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->

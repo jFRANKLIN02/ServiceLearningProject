@@ -97,9 +97,12 @@
         <button class="print-button" onclick="window.print()">
             Print / Save PDF
         </button>
-        <a th:href="@{/activityForm/details/{id}(id=${activityForm.id})}" class="print-button">
+        <button onclick="window.close()" class="print-button">
             Cancel
-        </a>
+        </button>
+<!--        <a th:href="@{/activityForm/details/{id}(id=${activityForm.id})}" class="print-button">-->
+<!--            Cancel-->
+<!--        </a>-->
     </div>
 </div>
 </body>

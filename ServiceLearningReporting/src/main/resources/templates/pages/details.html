@@ -4,7 +4,11 @@
 </head>
 <body>
 <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
-
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 <!--Updated-->
 <div class="container">
     <h1 class="page-title">Activity Details</h1>
@@ -63,6 +67,9 @@
                     <span class="value" th:text="${activityForm.quantity}"></span>
                 </div>
             </div>
+            <div>
+                <button type="button" class="btn" onclick="goBack()">Go Back</button><br><br>
+            </div>
         </div>
         <!-- SIDE PANEL -->
         <div class="side-column">
@@ -111,53 +118,4 @@
         </div>
     </div>
 </div>
-<!--&lt;!&ndash;Print Options&ndash;&gt;-->
-<!--<h2>Print Options</h2>-->
-<!--    <form th:action="@{/activityForm/print/{id}(id=${activityForm.id})}" method="post">-->
-<!--        <label>-->
-<!--            <input type="checkbox" name="fields" value="date" checked>-->
-<!--            Date-->
-<!--        </label>-->
-<!--        <label>-->
-<!--            <input type="checkbox" name="fields" value="startTime" checked>-->
-<!--            Start Time-->
-<!--        </label>-->
-<!--        <label>-->
-<!--            <input type="checkbox" name="fields" value="endTime">-->
-<!--            End Time-->
-<!--        </label>-->
-<!--        <label>-->
-<!--            <input type="checkbox" name="fields" value="organizationName">-->
-<!--            Organization-->
-<!--        </label>-->
-<!--        <label>-->
-<!--            <input type="checkbox" name="fields" value="activityDescription">-->
-<!--            Description-->
-<!--        </label>-->
-<!--        <label>-->
-<!--            <input type="checkbox" name="fields" value="imagePath"> Images-->
-<!--        </label>-->
-<!--&lt;!&ndash;&lt;!&ndash;        instructor only&ndash;&gt;&ndash;&gt;-->
-<!--        <div th:if="${activityForm.formType == 'Instructor'}">-->
-<!--            <label>-->
-<!--                <input type="checkbox" name="fields" value="program">-->
-<!--                Program-->
-<!--            </label>-->
-<!--            <label>-->
-<!--                <input type="checkbox" name="fields" value="participant">-->
-<!--                Participants-->
-<!--            </label>-->
-<!--            <label>-->
-<!--                <input type="checkbox" name="fields" value="campus">-->
-<!--                Campus-->
-<!--            </label>-->
-<!--            <label>-->
-<!--                <input type="checkbox" name="fields" value="quantity">-->
-<!--                Quantity-->
-<!--            </label>-->
-<!--        </div>-->
-<!--        <button type="submit" formtarget="_blank">-->
-<!--            Generate PDF-->
-<!--        </button>-->
-<!--    </form>-->
 </body>
