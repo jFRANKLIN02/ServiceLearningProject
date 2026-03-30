@@ -16,7 +16,7 @@ import java.util.Map;
 @Controller
 public class LoginController {
     @GetMapping("/login")
-    public String login(Model model, HttpSession session) {
+    public String login(Model model) {
         model.addAttribute("content", "pages/login");
         return "layout";
     }

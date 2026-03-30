@@ -13,18 +13,16 @@ import java.time.LocalDateTime;
 public class PageController {
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
-        UserResponse user = (UserResponse) session.getAttribute("user");
-        model.addAttribute("user", user);
+        model.addAttribute("user", session.getAttribute("user"));
         model.addAttribute("content", "pages/home");
         return "layout";
     }
     @GetMapping("/userForm")
     public String userForm(Model model, HttpSession session) {
-        UserResponse user = (UserResponse) session.getAttribute("user");
         ActivityForm form = new ActivityForm();
         form.setTimestamp(LocalDateTime.now());
         form.setFormType("Student");
-        model.addAttribute("user", user);
+        model.addAttribute("user", session.getAttribute("user"));
         model.addAttribute("activityForm", form);
         model.addAttribute("readOnly", false);
         model.addAttribute("isEdit", false);

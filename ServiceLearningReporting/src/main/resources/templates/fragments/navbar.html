@@ -6,8 +6,7 @@
             <li><a class="navbar-brand" href="/activityForm/inProgress">In-Progress Forms</a></li>
             <li><a class="navbar-brand" href="/userForm">Student/Staff Forms</a></li>
 <!--            Hide unless role == "Instructor-->
-            <!--/*@thymesVar id="user" type="userResponse"*/-->
-            <li th:if="${user.roleName == 'Instructor'}">
+            <li th:if="${session.user != null and session.user.roleName == 'Instructor'}">
                 <a class="navbar-brand" href="/instructorForm">Instructor Forms</a>
             </li>
             <li><a class="navbar-brand" href="/logout">Logout</a></li>

@@ -7,12 +7,12 @@
 </head>
 <body>
     <!-- Static content -->
-    <div th:replace="fragments/header :: header"></div>
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <hr/>
 
     <!-- Dynamic body -->
-    <div th:replace="${content}"></div>
+    <div th:replace="~{${content}}"></div>
 </body>
 </html>

@@ -9,7 +9,9 @@
             <div class="sidebar">
                 <ul>
                     <li><a href="/userForm">New Form</a></li>
-                    <li th:if="${user.roleName == 'Instructor'}"><a href="/instructorForm">Instructor Form</a></li>
+                    <li th:if="${session.user != null and session.user.roleName == 'Instructor'}">
+                        <a href="/instructorForm">Instructor Form</a>
+                    </li>
                     <li><a href="/activityForm/submitted">Submitted Forms</a></li>
                     <li><a href="/activityForm/inProgress">In-Progress Forms</a></li>
                 </ul>
