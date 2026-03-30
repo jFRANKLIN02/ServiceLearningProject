@@ -32,6 +32,7 @@ public class LoginController {
             ResponseEntity<UserResponse> response = restTemplate.postForEntity(apiUrl, request, UserResponse.class);
             if (response.getStatusCode().is2xxSuccessful()) {
                 session.setAttribute("user", response.getBody());
+                System.out.println();
                 return "redirect:/";
             }
         }
