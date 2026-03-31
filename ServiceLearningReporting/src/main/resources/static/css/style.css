@@ -32,7 +32,7 @@ body {
 /* MAIN CONTAINER */
 /* ===================================== */
 .container {
-    max-width: 1100px;
+    max-width: 1800px;
     margin: 1em;
     background: white;
     padding: 40px;
@@ -253,4 +253,13 @@ button:hover, .btn:hover {
     padding: 40px;
     border-radius: 6px;
     border: 1px solid var(--border-light);
+}
+
+/* Program filter select box */
+.program-filter {
+    max-width: 18em;
+}
+
+.pagination {
+    padding: 10px;
 }
