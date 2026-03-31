@@ -5,6 +5,9 @@ import org.example.servicelearningreporting.models.ActivityForm;
 import org.example.servicelearningreporting.models.UserResponse;
 import org.example.servicelearningreporting.repos.ActivityFormRepo;
 import org.example.servicelearningreporting.services.PdfService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,23 +34,35 @@ public class ActivityFormController {
 
     //get in progress forms
     @GetMapping("/inProgress")
-    public String inProgressForms(Model model, HttpSession session) {
+    public String inProgressForms(Model model,
+                                  HttpSession session,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "25") int size) {
         UserResponse user = (UserResponse) session.getAttribute("user");
-
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ActivityForm> formsPage = activityFormRepo.findBySubmittedAndUserID(true, user.getUserID(), pageable);
         model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmittedAndUserID(false, user.getUserID());
-        model.addAttribute("activityForms", forms);
+        model.addAttribute("activityForms", formsPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", formsPage.getTotalPages());
+        model.addAttribute("size", size);
         model.addAttribute("content", "pages/inProgressForms");
         return "layout";
     }
     //Get submitted Forms
     @GetMapping("/submitted")
-    public String submittedForms(Model model, HttpSession session) {
+    public String submittedForms(Model model,
+                                 HttpSession session,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "25") int size) {
         UserResponse user = (UserResponse) session.getAttribute("user");
-
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ActivityForm> formsPage = activityFormRepo.findBySubmittedAndUserID(true, user.getUserID(), pageable);
         model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmittedAndUserID(true, user.getUserID());
-        model.addAttribute("activityForms", forms);
+        model.addAttribute("activityForms", formsPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", formsPage.getTotalPages());
+        model.addAttribute("size", size);
         model.addAttribute("content", "pages/submittedForms");
         return "layout";
     }
