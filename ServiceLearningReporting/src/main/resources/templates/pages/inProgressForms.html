@@ -6,22 +6,145 @@
         <h1>
             In-Progress Forms
         </h1>
+        <!--Search summary-->
+        <div th:if="${search != null and !search.isEmpty()}" class="alert alert-info">
+            <strong>Search Results for:</strong> "[[${search}]]"
+            <span th:if="${totalElements > 0}">[[${totalElements}]] found</span>
+            <span th:if="${totalElements == 0}">no results</span>
+            <a th:href="@{/activityForm/inProgress(page=0, size=${size})}" class="clear-search">Clear Search</a>
+        </div>
         <!--Search-->
         <label>Search:</label>
         <input type="text" id="searchBox" placeholder="Search...">
-        <button onclick="searchInProgressForms()">Search</button>
-        <script>
-            function searchInProgressForms() {
-                const query = document.getElementById("searchBox").value;
-                window.location.href = "/activityForm/inProgress?search=" + query;
-            }
-        </script>
+        <button onclick="applyAll()">Search</button>
         <!--Sort-->
         <label>Sort by Activity Date:</label>
-        <select onchange="window.location.href='/activityForm/inProgress?sort=' + this.value">
-            <option value=""></option>
-            <option value="desc">Newest to Oldest</option>
-            <option value="asc">Oldest to Newest</option>
+        <select id="sortFilter" onchange="applyAll()">
+            <option value="" th:selected="${sort == null or sort == ''}">Default</option>
+            <option value="desc" th:selected="${sort == 'desc'}">Newest to Oldest</option>
+            <option value="asc" th:selected="${sort == 'asc'}">Oldest to Newest</option>
+        </select>
+        <!--Filters-->
+        <label th:unless="${isStudent}">Campus:</label>
+        <select th:unless="${isStudent}" id="campusFilter" onchange="applyAll()">
+            <option value="">All</option>
+            <option value="Fredericton">Fredericton</option>
+            <option value="Miramichi">Miramichi</option>
+            <option value="Moncton">Moncton</option>
+            <option value="Saint John">Saint John</option>
+            <option value="St. Andrews">St. Andrews</option>
+            <option value="Woodstock">Woodstock</option>
+        </select>
+        <label th:unless="${isStudent}">Program:</label>
+        <select th:unless="${isStudent}" id="programFilter" class="program-filter" onchange="applyAll()">
+            <option value="">-- Select a Program --</option>
+            <option value="Accounting and Payroll Administration">Accounting and Payroll Administration</option>
+            <option value="Administrative Professional">Administrative Professional</option>
+            <option value="Administrative Professional: Health Services">Administrative Professional: Health Services</option>
+            <option value="Administrative Professional: Legal Services">Administrative Professional: Legal Services</option>
+            <option value="Animation and Graphics">Animation and Graphics</option>
+            <option value="Applied Community Planning">Applied Community Planning</option>
+            <option value="Applied Construction Management">Applied Construction Management</option>
+            <option value="Auto Body and Collision Technician">Auto Body and Collision Technician</option>
+            <option value="Automotive Service Technician">Automotive Service Technician</option>
+            <option value="Automotive Technology">Automotive Technology</option>
+            <option value="Building Engineering Technology (Optional Co-op)">Building Engineering Technology (Optional Co-op)</option>
+            <option value="Building Systems Engineering Technology">Building Systems Engineering Technology</option>
+            <option value="Business Administration: Accounting">Business Administration: Accounting</option>
+            <option value="Business Administration: Financial Management">Business Administration: Financial Management</option>
+            <option value="Business Administration: Management">Business Administration: Management</option>
+            <option value="Business Administration: Marketing">Business Administration: Marketing</option>
+            <option value="Business Fundamentals">Business Fundamentals</option>
+            <option value="Carpentry">Carpentry</option>
+            <option value="Carpentry (Optional Co-op)">Carpentry (Optional Co-op)</option>
+            <option value="Chemical Technology (Optional Co-op)">Chemical Technology (Optional Co-op)</option>
+            <option value="Child and Youth Care">Child and Youth Care</option>
+            <option value="Civil Engineering Technician">Civil Engineering Technician</option>
+            <option value="Civil Engineering Technology (Optional Co-op)">Civil Engineering Technology (Optional Co-op)</option>
+            <option value="Culinary Arts">Culinary Arts</option>
+            <option value="Culinary Arts Management">Culinary Arts Management</option>
+            <option value="Digital Marketing">Digital Marketing</option>
+            <option value="Early Childhood Education">Early Childhood Education</option>
+            <option value="Educational Support">Educational Support</option>
+            <option value="Electrical and Electronics Engineering Technician">Electrical and Electronics Engineering Technician</option>
+            <option value="Electrical Engineering Technology (Optional Co-op)">Electrical Engineering Technology (Optional Co-op)</option>
+            <option value="Electrical, Instrumentation and Controls Technician (Optional Co-op)">Electrical, Instrumentation and Controls Technician (Optional Co-op)</option>
+            <option value="Electrical: Construction">Electrical: Construction</option>
+            <option value="Electrical: Industrial">Electrical: Industrial</option>
+            <option value="Electronics Engineering Technology (Optional Co-op)">Electronics Engineering Technology (Optional Co-op)</option>
+            <option value="Firefighter*">Firefighter*</option>
+            <option value="Graphic Design">Graphic Design</option>
+            <option value="Health Sciences">Health Sciences</option>
+            <option value="Heavy Duty Equipment / Truck and Transport Repair">Heavy Duty Equipment / Truck and Transport Repair</option>
+            <option value="Heavy Duty Equipment Technician (Optional Co-op)">Heavy Duty Equipment Technician (Optional Co-op)</option>
+            <option value="Heavy Equipment Operator*">Heavy Equipment Operator*</option>
+            <option value="Hospitality and Tourism Management">Hospitality and Tourism Management</option>
+            <option value="Hotel & Restaurant Management">Hotel & Restaurant Management</option>
+            <option value="Hotel & Restaurant Operations">Hotel & Restaurant Operations</option>
+            <option value="Human Resources Management">Human Resources Management</option>
+            <option value="Human Service Practitioner">Human Service Practitioner</option>
+            <option value="HVAC: Sheet Metal Fabrication">HVAC: Sheet Metal Fabrication</option>
+            <option value="Industrial Mechanics">Industrial Mechanics</option>
+            <option value="Information Technology: Business Analysis">Information Technology: Business Analysis</option>
+            <option value="Information Technology: Business and Advanced Analytics">Information Technology: Business and Advanced Analytics</option>
+            <option value="Information Technology: Cybersecurity">Information Technology: Cybersecurity</option>
+            <option value="Information Technology: Data Analytics">Information Technology: Data Analytics</option>
+            <option value="Information Technology: Game Development">Information Technology: Game Development</option>
+            <option value="Information Technology: Network Administration">Information Technology: Network Administration</option>
+            <option value="Information Technology: Quality Assurance Testing">Information Technology: Quality Assurance Testing</option>
+            <option value="Information Technology: Software Development">Information Technology: Software Development</option>
+            <option value="Justice Studies: Police Foundations">Justice Studies: Police Foundations</option>
+            <option value="Justice Studies: Public Safety">Justice Studies: Public Safety</option>
+            <option value="Machinist">Machinist</option>
+            <option value="Marine Diesel Mechanics">Marine Diesel Mechanics</option>
+            <option value="Mechanical Engineering Technology (Optional Co-op)">Mechanical Engineering Technology (Optional Co-op)</option>
+            <option value="Mechanical Technician (Optional Co-op)">Mechanical Technician (Optional Co-op)</option>
+            <option value="Mechanized Forest Equipment Operator*">Mechanized Forest Equipment Operator*</option>
+            <option value="Medical Laboratory Assistant">Medical Laboratory Assistant</option>
+            <option value="Medical Laboratory Technology">Medical Laboratory Technology</option>
+            <option value="Metal Fabrication">Metal Fabrication</option>
+            <option value="Mobile Crane Operator*">Mobile Crane Operator*</option>
+            <option value="Motorcycle Repair">Motorcycle Repair</option>
+            <option value="Non-Profit Leadership">Non-Profit Leadership</option>
+            <option value="Opticianry">Opticianry</option>
+            <option value="Personal Support Worker Acute Care">Personal Support Worker Acute Care</option>
+            <option value="Pharmacy Assistant">Pharmacy Assistant</option>
+            <option value="Pharmacy Technician">Pharmacy Technician</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="Power Engineering Technology (Optional Co-op)">Power Engineering Technology (Optional Co-op)</option>
+            <option value="Powerline Technician*">Powerline Technician*</option>
+            <option value="Practical Nurse">Practical Nurse</option>
+            <option value="Precision Machining">Precision Machining</option>
+            <option value="Process Control Technician (Optional Co-op)">Process Control Technician (Optional Co-op)</option>
+            <option value="Refrigeration and Air Conditioning Technician">Refrigeration and Air Conditioning Technician</option>
+            <option value="Respiratory Therapy">Respiratory Therapy</option>
+            <option value="Skilled Trades Techniques">Skilled Trades Techniques</option>
+            <option value="Social Service Community Worker">Social Service Community Worker</option>
+            <option value="Steamfitting/Pipefitting">Steamfitting/Pipefitting</option>
+            <option value="Supply Chain Management and Logistics">Supply Chain Management and Logistics</option>
+            <option value="Sustainable Agriculture (Optional Co-op)">Sustainable Agriculture (Optional Co-op)</option>
+            <option value="Truck and Transport Technician (Optional Co-op)">Truck and Transport Technician (Optional Co-op)</option>
+            <option value="Welding and Metal Fabrication">Welding and Metal Fabrication</option>
+            <option value="Welding Engineering Technology (Optional Co-op)">Welding Engineering Technology (Optional Co-op)</option>
+            <option value="Welding Plus Pressure Welding">Welding Plus Pressure Welding</option>
+            <option value="Wind and Solar Energy Technician (Optional Co-op)">Wind and Solar Energy Technician (Optional Co-op)</option>
+        </select>
+        <!--Date Range-->
+        <label th:unless="${isStudent}">Date Range:</label>
+        <input th:unless="${isStudent}" type="date" id="startDateFilter" th:value="${startDate}"
+               placeholder="From Date"
+               th:min="${minDate}" th:max="${maxDate}">
+        <span th:unless="${isStudent}">to</span>
+        <input th:unless="${isStudent}" type="date" id="endDateFilter" th:value="${endDate}"
+               placeholder="To Date"
+               th:min="${minDate}" th:max="${maxDate}">
+        <button th:unless="${isStudent}" onclick="applyAll()" class="btn btn-primary" style="margin-left: 10px;">Apply</button><br th:unless="${isStudent}">
+        <!--Pagination-->
+        <label>Records per Page:</label>
+        <select id="sizeFilter" onchange="applyAll()">
+            <option value="25" th:selected="${size == 25}">25</option>
+            <option value="50" th:selected="${size == 50}">50</option>
+            <option value="100" th:selected="${size == 100}">100</option>
         </select>
         <!--Table of forms-->
         <table>
@@ -39,7 +162,10 @@
             <tbody>
             <!--If search has no results-->
             <tr th:if="${#lists.isEmpty(activityForms)}">
-                <td align="center" colspan="7">No results found.</td>
+                <td align="center" colspan="7">
+                    <span th:if="${search != null and !search.isEmpty()}">No results found for "[[${search}]]".</span>
+                    <span th:unless="${search != null and !search.isEmpty()}">No forms found.</span>
+                </td>
             </tr>
             <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
                 <tr th:each="activityForm : ${activityForms}">
@@ -54,6 +180,7 @@
                         <a th:href="@{/activityForm/edit/{id}(id=${activityForm.id})}">
                             Edit
                         </a>
+                        <a> | </a>
                         <a th:href="@{/activityForm/details/{id}(id=${activityForm.id})}">
                             Details
                         </a>
@@ -61,5 +188,118 @@
                 </tr>
             </tbody>
         </table>
+        <!--Pagination-->
+        <div class="pagination">
+            <a th:if="${currentPage > 0}"
+               th:href="@{/activityForm/inProgress(  <!-- CHANGE THIS -->
+                    page=${currentPage - 1},
+                    size=${size},
+                    campus=${campus},
+                    program=${program},
+                    search=${search},
+                    sort=${sort},
+                    startDate=${startDate},
+                    endDate=${endDate})}">
+                Previous
+            </a>
+            <span th:text="'Page ' + (${currentPage}+1) + ' of ' + ${totalPages} + ' (' + ${totalElements} + ' total records)'"></span>
+            <a th:if="${currentPage < totalPages - 1}"
+               th:href="@{/activityForm/inProgress(  <!-- CHANGE THIS -->
+                    page=${currentPage + 1},
+                    size=${size},
+                    campus=${campus},
+                    program=${program},
+                    search=${search},
+                    sort=${sort},
+                    startDate=${startDate},
+                    endDate=${endDate})}">
+                Next
+            </a>
+        </div>
+        <!--Clear filters-->
+        <div>
+            <button onclick="clearAllFilters()" class="btn btn-secondary">Clear All Filters</button>
+        </div>
     </div>
+    <script>
+        function applyAll() {
+            const search = document.getElementById("searchBox").value;
+            const size = document.getElementById("sizeFilter").value;
+            const sort = document.getElementById("sortFilter").value;
+
+            let url = "/activityForm/submitted?";
+            let params = [];
+
+            if (search && search.trim() !== "") {
+                params.push("search=" + encodeURIComponent(search.trim()));
+            }
+            if (size && size !== "25") {
+                params.push("size=" + size);
+            }
+            if (sort && sort !== "") {
+                params.push("sort=" + sort);
+            }
+
+            const campusFilter = document.getElementById("campusFilter");
+            if (campusFilter && campusFilter.value && campusFilter.value !== "") {
+                params.push("campus=" + encodeURIComponent(campusFilter.value));
+            }
+
+            const programFilter = document.getElementById("programFilter");
+            if (programFilter && programFilter.value && programFilter.value !== "") {
+                params.push("program=" + encodeURIComponent(programFilter.value));
+            }
+
+            const startDateFilter = document.getElementById("startDateFilter");
+            if (startDateFilter && startDateFilter.value && startDateFilter.value !== "") {
+                params.push("startDate=" + encodeURIComponent(startDateFilter.value));
+            }
+
+            const endDateFilter = document.getElementById("endDateFilter");
+            if (endDateFilter && endDateFilter.value && endDateFilter.value !== "") {
+                params.push("endDate=" + encodeURIComponent(endDateFilter.value));
+            }
+
+            params.push("page=0");
+
+            window.location.href = url + params.join("&");
+        }
+
+        function clearAllFilters() {
+            window.location.href = "/activityForm/submitted?page=0&size=25";
+        }
+
+        const searchBox = document.getElementById("searchBox");
+        if (searchBox) {
+            searchBox.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    applyAll();
+                }
+            });
+        }
+
+        function validateDateRange() {
+            const startDateFilter = document.getElementById("startDateFilter");
+            const endDateFilter = document.getElementById("endDateFilter");
+
+            if (startDateFilter && endDateFilter) {
+                const startDate = startDateFilter.value;
+                const endDate = endDateFilter.value;
+
+                if (startDate && endDate && startDate > endDate) {
+                    alert("Start date cannot be after end date!");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        const originalApplyAll = applyAll;
+        window.applyAll = function() {
+            if (validateDateRange()) {
+                originalApplyAll();
+            }
+        };
+    </script>
 </body>

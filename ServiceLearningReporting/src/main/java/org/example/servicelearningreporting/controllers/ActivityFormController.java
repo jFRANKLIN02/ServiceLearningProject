@@ -5,6 +5,10 @@ import org.example.servicelearningreporting.models.ActivityForm;
 import org.example.servicelearningreporting.models.UserResponse;
 import org.example.servicelearningreporting.repos.ActivityFormRepo;
 import org.example.servicelearningreporting.services.PdfService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,23 +36,196 @@ public class ActivityFormController {
 
     //get in progress forms
     @GetMapping("/inProgress")
-    public String inProgressForms(Model model, HttpSession session) {
+    public String inProgressForms(Model model,
+                                  HttpSession session,
+                                  @RequestParam(required = false) String search,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "25") int size,
+                                  @RequestParam(required = false) String campus,
+                                  @RequestParam(required = false) String program,
+                                  @RequestParam(required = false) String sort,
+                                  @RequestParam(required = false) String startDate,
+                                  @RequestParam(required = false) String endDate) {
         UserResponse user = (UserResponse) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
 
+        // Check if user is a student
+        boolean isStudent = "Student".equals(user.getRoleName());
+
+        LocalDate startDateObj = null;
+        LocalDate endDateObj = null;
+        if (startDate != null && !startDate.isEmpty()) {
+            try {
+                startDateObj = LocalDate.parse(startDate);
+            } catch (Exception e) {
+            }
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            try {
+                endDateObj = LocalDate.parse(endDate);
+            } catch (Exception e) {
+            }
+        }
+        Pageable pageable;
+        if (sort != null && !sort.isEmpty()) {
+            if ("asc".equals(sort)) {
+                pageable = PageRequest.of(page, size, Sort.by("date").ascending());
+            } else if ("desc".equals(sort)) {
+                pageable = PageRequest.of(page, size, Sort.by("date").descending());
+            } else {
+                pageable = PageRequest.of(page, size);
+            }
+        } else {
+            pageable = PageRequest.of(page, size);
+        }
+
+        Page<ActivityForm> formsPage;
+
+        // If student, don't apply campus and program filters
+        if (isStudent) {
+            // For students, only use search and date range
+            formsPage = activityFormRepo.findBySubmittedFalseAndUserIDWithFiltersAndSearchAndDateRange(
+                    user.getUserID(),
+                    "", // Empty campus for students
+                    "", // Empty program for students
+                    search != null ? search : "",
+                    startDateObj,
+                    endDateObj,
+                    pageable);
+        } else {
+            // For non-students (staff/instructors), use all filters
+            formsPage = activityFormRepo.findBySubmittedFalseAndUserIDWithFiltersAndSearchAndDateRange(
+                    user.getUserID(),
+                    campus != null ? campus : "",
+                    program != null ? program : "",
+                    search != null ? search : "",
+                    startDateObj,
+                    endDateObj,
+                    pageable);
+        }
+
+        Object[] dateRangeStats = activityFormRepo.getInProgressDateRangeStats(user.getUserID());
+        LocalDate minDate = null;
+        LocalDate maxDate = null;
+        if (dateRangeStats != null && dateRangeStats.length >= 2) {
+            minDate = (LocalDate) dateRangeStats[0];
+            maxDate = (LocalDate) dateRangeStats[1];
+        }
+
+        model.addAttribute("isStudent", isStudent);
         model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmittedAndUserID(false, user.getUserID());
-        model.addAttribute("activityForms", forms);
+        model.addAttribute("activityForms", formsPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", formsPage.getTotalPages());
+        model.addAttribute("totalElements", formsPage.getTotalElements());
+        model.addAttribute("size", size);
+        model.addAttribute("campus", campus);
+        model.addAttribute("program", program);
+        model.addAttribute("search", search);
+        model.addAttribute("sort", sort);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("minDate", minDate);
+        model.addAttribute("maxDate", maxDate);
         model.addAttribute("content", "pages/inProgressForms");
         return "layout";
     }
     //Get submitted Forms
     @GetMapping("/submitted")
-    public String submittedForms(Model model, HttpSession session) {
+    public String submittedForms(Model model,
+                                 HttpSession session,
+                                 @RequestParam(required = false) String search,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "25") int size,
+                                 @RequestParam(required = false) String campus,
+                                 @RequestParam(required = false) String program,
+                                 @RequestParam(required = false) String sort,
+                                 @RequestParam(required = false) String startDate,
+                                 @RequestParam(required = false) String endDate) {
         UserResponse user = (UserResponse) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
 
-        model.addAttribute("activityForm", new ActivityForm());
-        List<ActivityForm> forms = activityFormRepo.findBySubmittedAndUserID(true, user.getUserID());
-        model.addAttribute("activityForms", forms);
+        // Check if user is a student
+        boolean isStudent = "Student".equals(user.getRoleName());
+
+        LocalDate startDateObj = null;
+        LocalDate endDateObj = null;
+        if (startDate != null && !startDate.isEmpty()) {
+            try {
+                startDateObj = LocalDate.parse(startDate);
+            } catch (Exception e) {
+            }
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            try {
+                endDateObj = LocalDate.parse(endDate);
+            } catch (Exception e) {
+            }
+        }
+        Pageable pageable;
+        if (sort != null && !sort.isEmpty()) {
+            if ("asc".equals(sort)) {
+                pageable = PageRequest.of(page, size, Sort.by("date").ascending());
+            } else if ("desc".equals(sort)) {
+                pageable = PageRequest.of(page, size, Sort.by("date").descending());
+            } else {
+                pageable = PageRequest.of(page, size);
+            }
+        } else {
+            pageable = PageRequest.of(page, size);
+        }
+
+        Page<ActivityForm> formsPage;
+
+        // If student, don't apply campus and program filters
+        if (isStudent) {
+            // For students, only use search and date range
+            formsPage = activityFormRepo.findBySubmittedAndUserIDWithFiltersAndSearchAndDateRange(
+                    user.getUserID(),
+                    "", // Empty campus for students
+                    "", // Empty program for students
+                    search != null ? search : "",
+                    startDateObj,
+                    endDateObj,
+                    pageable);
+        } else {
+            // For non-students (staff/instructors), use all filters
+            formsPage = activityFormRepo.findBySubmittedAndUserIDWithFiltersAndSearchAndDateRange(
+                    user.getUserID(),
+                    campus != null ? campus : "",
+                    program != null ? program : "",
+                    search != null ? search : "",
+                    startDateObj,
+                    endDateObj,
+                    pageable);
+        }
+
+        Object[] dateRangeStats = activityFormRepo.getSubmittedDateRangeStats(user.getUserID());
+        LocalDate minDate = null;
+        LocalDate maxDate = null;
+        if (dateRangeStats != null && dateRangeStats.length >= 2) {
+            minDate = (LocalDate) dateRangeStats[0];
+            maxDate = (LocalDate) dateRangeStats[1];
+        }
+
+        model.addAttribute("isStudent", isStudent);
+        model.addAttribute("activityForms", formsPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", formsPage.getTotalPages());
+        model.addAttribute("totalElements", formsPage.getTotalElements());
+        model.addAttribute("size", size);
+        model.addAttribute("campus", campus);
+        model.addAttribute("program", program);
+        model.addAttribute("search", search);
+        model.addAttribute("sort", sort);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("minDate", minDate);
+        model.addAttribute("maxDate", maxDate);
         model.addAttribute("content", "pages/submittedForms");
         return "layout";
     }
