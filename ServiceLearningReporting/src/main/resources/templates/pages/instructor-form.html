@@ -7,7 +7,7 @@
     <body>
         <div class="container">
         <!--/*@thymesVar id="activityForm" type="org.example.servicelearningreporting.models.ActivityForm"*/-->
-            <form th:object="${activityForm}" method="post">
+            <form th:object="${activityForm}" method="post" enctype="multipart/form-data">
                 <div>
                     <h1>LOG SERVICE LEARNING ACTIVITY</h1>
                     <button>FR</button>
@@ -190,8 +190,15 @@
                 </div>
                 <!--Picture-->
                 <div>
-                    <label>Upload Picture </label>
-                    <button>+</button>
+                    <label>Upload Picture (Max 5, up to 3MB each)</label>
+                    <label for="images" style="cursor:pointer; padding:5px 10px; border:1px solid black;">+</label>
+                    <input type="file"
+                           id="images"
+                           name="images[]"
+                           multiple
+                           accept=".png,.jpg,.jpeg,.tiff"
+                           style="display:none;">
+                    <div id="preview" style="margin-top:10px;"></div>
                 </div>
                 <!--Description-->
                 <div>
@@ -259,6 +266,35 @@
             }
             document.getElementById("startTime").addEventListener("change", calculateHours);
             document.getElementById("endTime").addEventListener("change", calculateHours);
+        </script>
+        <!--JavaScript for image preview-->
+        <script>
+            document.getElementById('images').addEventListener('change', function () {
+                const preview = document.getElementById('preview');
+                preview.innerHTML = "";
+                const files = this.files;
+                if (files.length > 5) {
+                    alert("Maximum 5 images allowed");
+                    this.value = "";
+                    return;
+                }
+                Array.from(files).forEach(file => {
+                    if (file.size > 3 * 1024 * 1024) {
+                        alert(file.name + " exceeds 3MB");
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.style.width = "120px";
+                        img.style.margin = "5px";
+                        img.style.border = "1px solid #ccc";
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
         </script>
     </body>
 </html>

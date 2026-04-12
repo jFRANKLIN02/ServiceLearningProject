@@ -34,7 +34,8 @@ public class ActivityForm {
     private String phone;
     private String activityDescription;
     private double donations;
-    private String imagePath;//should be a list of 5?
+    @ElementCollection
+    private java.util.List<String> imagePaths;
     //new field
     private boolean submitted;
 
