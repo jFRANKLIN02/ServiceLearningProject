@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
-
+//Jaren Franklin
 @Controller
 public class LoginController {
     @GetMapping("/login")

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
-
+//Jaren Franklin - Didnt understand Layouts in java brfore this. Very nice learning experience
 @Controller
 public class PageController {
     @GetMapping("/")

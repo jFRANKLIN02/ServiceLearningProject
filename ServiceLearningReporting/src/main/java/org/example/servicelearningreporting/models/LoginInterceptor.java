@@ -7,7 +7,7 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class LoginInterceptor implements HandlerInterceptor {
-
+//Jaren Franklin - Very happy with the Login interceptor and Web Config
     @Override
     public boolean preHandle(HttpServletRequest request,
                              @NonNull HttpServletResponse response,
